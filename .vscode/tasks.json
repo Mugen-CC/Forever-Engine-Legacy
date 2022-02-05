@@ -4,23 +4,24 @@
 		{
 			"type": "lime",
 			"command": "test",
-			"targetConfiguration": "Windows",
-			"group": {
-				"kind": "test",
-				"isDefault": true
-			}
+			"group": "build",
+			"label": "lime: test (active configuration)"
 		},
 		{
 			"type": "lime",
 			"command": "test",
-			"targetConfiguration": "Windows",
+			"targetConfiguration": "Windows / Debug",
 			"problemMatcher": [
 				"$haxe-absolute",
 				"$haxe",
 				"$haxe-error",
 				"$haxe-trace"
 			],
-			"label": "lime: test windows"
+			"label": "lime: test windows -debug",
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			}
 		}
 	]
 }
