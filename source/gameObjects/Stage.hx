@@ -29,27 +29,36 @@ using StringTools;
 **/
 class Stage extends FlxTypedGroup<FlxBasic>
 {
+	//Spooky
 	var halloweenBG:FNFSprite;
+
+	//Philly
 	var phillyCityLights:FlxTypedGroup<FNFSprite>;
 	var phillyTrain:FNFSprite;
 	var trainSound:FlxSound;
+	var curLight:Int = 0;
+	var trainMoving:Bool = false;
+	var trainFrameTiming:Float = 0;
+	var trainCars:Int = 8;
+	var trainFinishing:Bool = false;
+	var trainCooldown:Int = 0;
+	var startedMoving:Bool = false;
 
+	//Limo
 	public var limo:FNFSprite;
-
 	public var grpLimoDancers:FlxTypedGroup<BackgroundDancer>;
-
 	var fastCar:FNFSprite;
 
+	//Mall
 	var upperBoppers:FNFSprite;
 	var bottomBoppers:FNFSprite;
 	var santa:FNFSprite;
 
+	//School
 	var bgGirls:BackgroundGirls;
 
 	public var curStage:String;
-
 	var daPixelZoom = PlayState.daPixelZoom;
-
 	public var foreground:FlxTypedGroup<FlxBasic>;
 
 	public function new(curStage)
@@ -448,15 +457,6 @@ class Stage extends FlxTypedGroup<FlxBasic>
 
 		}
 	}
-
-	var curLight:Int = 0;
-	var trainMoving:Bool = false;
-	var trainFrameTiming:Float = 0;
-
-	var trainCars:Int = 8;
-	var trainFinishing:Bool = false;
-	var trainCooldown:Int = 0;
-	var startedMoving:Bool = false;
 
 	public function stageUpdate(curBeat:Int, boyfriend:Boyfriend, gf:Character, dadOpponent:Character)
 	{
