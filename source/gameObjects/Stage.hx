@@ -33,6 +33,7 @@ class Stage extends FlxTypedGroup<FlxBasic>
 	var halloweenBG:FNFSprite;
 
 	//Philly
+
 	var phillyCityLights:FlxTypedGroup<FNFSprite>;
 	var phillyTrain:FNFSprite;
 	var trainSound:FlxSound;
