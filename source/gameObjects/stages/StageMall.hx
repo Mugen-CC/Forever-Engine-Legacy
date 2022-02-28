@@ -1,6 +1,26 @@
 package gameObjects.stages;
 
+import flixel.FlxBasic;
+import flixel.FlxCamera;
+import flixel.FlxG;
+import flixel.FlxObject;
+import flixel.FlxSprite;
+import flixel.FlxState;
+import flixel.addons.effects.FlxTrail;
+import flixel.addons.effects.chainable.FlxWaveEffect;
+import flixel.group.FlxGroup.FlxTypedGroup;
+import flixel.group.FlxSpriteGroup;
+import flixel.math.FlxPoint;
+import flixel.system.FlxSound;
+import flixel.text.FlxText;
+import flixel.tweens.FlxTween;
 import gameObjects.Stage;
+import gameObjects.background.*;
+import gameObjects.stages.*;
+import meta.CoolUtil;
+import meta.data.Conductor;
+import meta.data.dependency.FNFSprite;
+import meta.state.PlayState;
 
 class StageMall extends Stage
 {
@@ -8,25 +28,22 @@ class StageMall extends Stage
 	var bottomBoppers:FNFSprite;
 	var santa:FNFSprite;
 
-	public function new(curStage)
+	public function new()
 	{
 		super();
-		this.curStage = curStage;
+		this.curStage = 'mall';
 
 		/// get hardcoded stage type if chart is fnf style
 		if (PlayState.determinedChartType == "FNF")
 		{
 			// this is because I want to avoid editing the fnf chart type
 			// custom stage stuffs will come with forever charts
-			curStage = 'mall';
 			PlayState.curStage = curStage;
 		}
 
 		// to apply to foreground use foreground.add(); instead of add();
 		foreground = new FlxTypedGroup<FlxBasic>();
 
-		//
-		curStage = 'mall';
 		PlayState.defaultCamZoom = 0.80;
 
 		var bg:FNFSprite = new FNFSprite(-1000, -500).loadGraphic(Paths.image('backgrounds/' + curStage + '/bgWalls'));
@@ -81,19 +98,19 @@ class StageMall extends Stage
 	}
 
 	// return the girlfriend's type
-	public function returnGFtype(curStage)
+	override public function returnGFtype()
 	{
 		return 'gf-christmas';
 	}
 
-	public function repositionPlayers(curStage, boyfriend:Character, dad:Character, gf:Character):Void
+	override  public function repositionPlayers(boyfriend:Character, dad:Character, gf:Character):Void
 	{
 		boyfriend.x += 200;
 		dad.x -= 400;
 		dad.y += 20;
 	}
 
-	public function stageUpdate(curBeat:Int, boyfriend:Boyfriend, gf:Character, dadOpponent:Character)
+	override  public function stageUpdate(curBeat:Int, boyfriend:Boyfriend, gf:Character, dadOpponent:Character)
 	{
 		// trace('update backgrounds');
 		upperBoppers.animation.play('bop', true);

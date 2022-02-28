@@ -1,23 +1,42 @@
 package gameObjects.stages;
 
+import flixel.FlxBasic;
+import flixel.FlxCamera;
+import flixel.FlxG;
+import flixel.FlxObject;
+import flixel.FlxSprite;
+import flixel.FlxState;
+import flixel.addons.effects.FlxTrail;
+import flixel.addons.effects.chainable.FlxWaveEffect;
+import flixel.group.FlxGroup.FlxTypedGroup;
+import flixel.group.FlxSpriteGroup;
+import flixel.math.FlxPoint;
+import flixel.system.FlxSound;
+import flixel.text.FlxText;
+import flixel.tweens.FlxTween;
 import gameObjects.Stage;
+import gameObjects.background.*;
+import gameObjects.stages.*;
+import meta.CoolUtil;
+import meta.data.Conductor;
+import meta.data.dependency.FNFSprite;
+import meta.state.PlayState;
 
 class StageSchool extends Stage
 {
 	//School
 	var bgGirls:BackgroundGirls;
 
-	public function new(curStage)
+	public function new()
 	{
 		super();
-		this.curStage = curStage;
+		this.curStage = 'school';
 
 		/// get hardcoded stage type if chart is fnf style
 		if (PlayState.determinedChartType == "FNF")
 		{
 			// this is because I want to avoid editing the fnf chart type
 			// custom stage stuffs will come with forever charts
-			curStage = 'school';
 			PlayState.curStage = curStage;
 		}
 
@@ -25,8 +44,6 @@ class StageSchool extends Stage
 		foreground = new FlxTypedGroup<FlxBasic>();
 
 		//
-		curStage = 'school';
-
 		// defaultCamZoom = 0.9;
 
 		var bgSky = new FNFSprite().loadGraphic(Paths.image('backgrounds/' + curStage + '/weebSky'));
@@ -90,11 +107,11 @@ class StageSchool extends Stage
 	}
 
 	// return the girlfriend's type
-	public function returnGFtype(curStage)
+	override  public function returnGFtype()
 	{
 		return 'gf-pixel';
 	}
-	public function repositionPlayers(curStage, boyfriend:Character, dad:Character, gf:Character):Void
+	override  public function repositionPlayers(boyfriend:Character, dad:Character, gf:Character):Void
 	{
 		boyfriend.x += 200;
 		boyfriend.y += 220;
@@ -104,7 +121,7 @@ class StageSchool extends Stage
 		gf.y += 320;
 	}
 
-	public function stageUpdate(curBeat:Int, boyfriend:Boyfriend, gf:Character, dadOpponent:Character)
+	override  public function stageUpdate(curBeat:Int, boyfriend:Boyfriend, gf:Character, dadOpponent:Character)
 	{
 		// trace('update backgrounds');
 		bgGirls.dance();

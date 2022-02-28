@@ -23,6 +23,7 @@ import flixel.util.FlxColor;
 import flixel.util.FlxSort;
 import flixel.util.FlxTimer;
 import gameObjects.*;
+import gameObjects.stages.*;
 import gameObjects.userInterface.*;
 import gameObjects.userInterface.notes.*;
 import gameObjects.userInterface.notes.Strumline.UIStaticArrow;
@@ -214,7 +215,7 @@ class PlayState extends MusicBeatState
 		popUpCombo(true);
 		//
 
-		stageBuild = new Stage(curStage);
+		stageBuild = Stage.create(curStage);//new Stage(curStage);
 		add(stageBuild);
 
 		/*
@@ -231,7 +232,7 @@ class PlayState extends MusicBeatState
 		// set up characters here too
 		gf = new Character();
 		gf.adjustPos = false;
-		gf.setCharacter(300, 100, stageBuild.returnGFtype(curStage));
+		gf.setCharacter(300, 100, stageBuild.returnGFtype());
 		gf.scrollFactor.set(0.95, 0.95);
 
 		dadOpponent = new Character().setCharacter(50, 850, SONG.player2);
@@ -241,8 +242,8 @@ class PlayState extends MusicBeatState
 
 		var camPos:FlxPoint = new FlxPoint(gf.getMidpoint().x - 100, boyfriend.getMidpoint().y - 100);
 
-		stageBuild.repositionPlayers(curStage, boyfriend, dadOpponent, gf);
-		stageBuild.dadPosition(curStage, boyfriend, dadOpponent, gf, camPos);
+		stageBuild.repositionPlayers(boyfriend, dadOpponent, gf);
+		stageBuild.dadPosition(boyfriend, dadOpponent, gf, camPos);
 
 		changeableSkin = Init.trueSettings.get("UI Skin");
 		if ((curStage.startsWith("school")) && ((determinedChartType == "FNF")))
@@ -253,7 +254,7 @@ class PlayState extends MusicBeatState
 
 		// add limo cus dumb layering
 		if (curStage == 'highway')
-			add(stageBuild.limo);
+			add(cast(stageBuild,StageHighway).limo);
 
 		add(dadOpponent);
 		add(boyfriend);

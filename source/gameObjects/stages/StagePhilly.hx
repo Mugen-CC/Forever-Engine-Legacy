@@ -1,6 +1,26 @@
 package gameObjects.stages;
 
+import flixel.FlxBasic;
+import flixel.FlxCamera;
+import flixel.FlxG;
+import flixel.FlxObject;
+import flixel.FlxSprite;
+import flixel.FlxState;
+import flixel.addons.effects.FlxTrail;
+import flixel.addons.effects.chainable.FlxWaveEffect;
+import flixel.group.FlxGroup.FlxTypedGroup;
+import flixel.group.FlxSpriteGroup;
+import flixel.math.FlxPoint;
+import flixel.system.FlxSound;
+import flixel.text.FlxText;
+import flixel.tweens.FlxTween;
 import gameObjects.Stage;
+import gameObjects.background.*;
+import gameObjects.stages.*;
+import meta.CoolUtil;
+import meta.data.Conductor;
+import meta.data.dependency.FNFSprite;
+import meta.state.PlayState;
 
 class StagePhilly extends Stage
 {
@@ -15,25 +35,20 @@ class StagePhilly extends Stage
 	var trainCooldown:Int = 0;
 	var startedMoving:Bool = false;
 
-
-	public function new(curStage)
+	public function new()
 	{
 		super();
         
-		this.curStage = curStage;
+		this.curStage = 'philly';
 
 		/// get hardcoded stage type if chart is fnf style
 		if (PlayState.determinedChartType == "FNF")
 		{
-			curStage = 'philly';
 			PlayState.curStage = curStage;
 		}
 
 		// to apply to foreground use foreground.add(); instead of add();
 		foreground = new FlxTypedGroup<FlxBasic>();
-
-		//
-		curStage = 'philly';
 
 		var bg:FNFSprite = new FNFSprite(-100).loadGraphic(Paths.image('backgrounds/' + curStage + '/sky'));
 		bg.scrollFactor.set(0.1, 0.1);
@@ -74,13 +89,7 @@ class StagePhilly extends Stage
 		add(street);
 	}
 
-	// return the girlfriend's type
-	public function returnGFtype(curStage)
-	{
-		return 'gf';
-	}
-
-	public function stageUpdate(curBeat:Int, boyfriend:Boyfriend, gf:Character, dadOpponent:Character)
+	override  public function stageUpdate(curBeat:Int, boyfriend:Boyfriend, gf:Character, dadOpponent:Character)
 	{
 		// trace('update backgrounds');
 		if (!trainMoving)
@@ -118,7 +127,7 @@ class StagePhilly extends Stage
 		}
 	}
 
-	public function stageUpdateConstant(elapsed:Float, boyfriend:Boyfriend, gf:Character, dadOpponent:Character)
+	override  public function stageUpdateConstant(elapsed:Float, boyfriend:Boyfriend, gf:Character, dadOpponent:Character)
 	{
 		if (trainMoving)
 		{
