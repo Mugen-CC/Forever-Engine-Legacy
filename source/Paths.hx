@@ -170,9 +170,11 @@ class Paths
 
 		// well I'm rewriting it so that the library is the path and it looks for the file type
 		// later lmao I don't really wanna rn
-
+	
 		if (library != null)
+		{
 			return getLibraryPath(file, library);
+		}
 
 		/*
 			if (currentLevel != null)
@@ -188,7 +190,9 @@ class Paths
 
 		var levelPath = getLibraryPathForce(file, "mods");
 		if (OpenFlAssets.exists(levelPath, type))
+		{
 			return levelPath;
+		}
 		return getPreloadPath(file);
 	}
 
@@ -221,8 +225,6 @@ class Paths
 		if (!FileSystem.exists(returnPath))
 		{
 			returnPath = CoolUtil.swapSpaceDash(returnPath);
-			if (file == 'images/characters/expungedOffsets.xml')
-				trace('Preloading $file');
 		}
 		return returnPath;
 	}

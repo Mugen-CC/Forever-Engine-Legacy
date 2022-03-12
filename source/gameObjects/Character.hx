@@ -123,19 +123,9 @@ class Character extends FNFSprite
 				updateHitbox();
 				antialiasing = false;
 
-			case 'gf-tankmen':
-				frames = Paths.getSparrowAtlas('characters/gfTankmen');
-
-				animation.addByIndices('sad', 'GF Crying at Gunpoint', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], "", 24, false);
-				animation.addByIndices('danceLeft', 'GF Dancing at Gunpoint', [30, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14], "", 24, false);
-				animation.addByIndices('danceRight', 'GF Dancing at Gunpoint', [15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29], "", 24, false);
-
-				playAnim('danceRight');
-
 			case 'dad':
 				// DAD ANIMATION LOADING CODE
-				tex = Paths.getSparrowAtlas('characters/DADDY_DEAREST');
-				frames = tex;
+				frames = Paths.getSparrowAtlas('characters/DADDY_DEAREST');
 				animation.addByPrefix('idle', 'Dad idle dance', 24, false);
 				animation.addByPrefix('singUP', 'Dad Sing Note UP', 24);
 				animation.addByPrefix('singRIGHT', 'Dad Sing Note RIGHT', 24);
@@ -214,13 +204,13 @@ class Character extends FNFSprite
 				animation.addByPrefix('idle', "Pico Idle Dance", 24, false);
 				animation.addByPrefix('singUP', 'pico Up note0', 24, false);
 				animation.addByPrefix('singDOWN', 'Pico Down Note0', 24, false);
-				animation.addByPrefix('singLEFT', 'Pico NOTE LEFT0', 24, false);
-				animation.addByPrefix('singRIGHT', 'Pico Note Right0', 24, false);
+				animation.addByPrefix('singLEFT', 'Pico Note Right0', 24, false);
+				animation.addByPrefix('singRIGHT', 'Pico NOTE LEFT0', 24, false);
 
-				/*animation.addByPrefix('singRIGHTmiss', 'Pico Note Right Miss', 24, false);
-				animation.addByPrefix('singLEFTmiss', 'Pico NOTE LEFT miss', 24, false);
+				animation.addByPrefix('singRIGHTmiss', 'Pico Note LEFT miss', 24, false);
+				animation.addByPrefix('singLEFTmiss', 'Pico NOTE Right Miss', 24, false);
 				animation.addByPrefix('singUPmiss', 'pico Up note miss', 24);
-				animation.addByPrefix('singDOWNmiss', 'Pico Down Note MISS', 24);*/
+				animation.addByPrefix('singDOWNmiss', 'Pico Down Note MISS', 24);
 
 				playAnim('idle');
 
@@ -231,11 +221,11 @@ class Character extends FNFSprite
 				animation.addByPrefix('idle', "MTF Pico Idle Dance", 24, false);
 				animation.addByPrefix('singUP', 'pico Up note MTF', 24, false);
 				animation.addByPrefix('singDOWN', 'Pico Down Note MTF', 24, false);
-				animation.addByPrefix('singLEFT', 'Pico NOTE LEFT MTF', 24, false);
-				animation.addByPrefix('singRIGHT', 'Pico Note Right MTF', 24, false);
+				animation.addByPrefix('singLEFT', 'Pico Note Right MTF', 24, false);
+				animation.addByPrefix('singRIGHT', 'Pico NOTE LEFT MTF', 24, false);
 
-				animation.addByPrefix('singRIGHTmiss', 'Pico Note Right miss MTF', 24, false);
-				animation.addByPrefix('singLEFTmiss', 'Pico NOTE LEFT Miss MTF', 24, false);
+				animation.addByPrefix('singRIGHTmiss', 'Pico NOTE LEFT Miss MTF', 24, false);
+				animation.addByPrefix('singLEFTmiss', 'Pico Note Right miss MTF', 24, false);
 				animation.addByPrefix('singUPmiss', 'pico Up note miss MTF', 24);
 				animation.addByPrefix('singDOWNmiss', 'Pico Down Note MISS MTF', 24);
 
@@ -519,7 +509,6 @@ class Character extends FNFSprite
 				var getterArray:Array<Array<String>> = CoolUtil.getOffsetsFromTxt(Paths.offsetTxt(curCharacter + 'Offsets'));
 				addOffset(getterArray[i][0], Std.parseInt(getterArray[i][1]), Std.parseInt(getterArray[i][2]));
 			}
-			trace(animOffsets);
 		}
 		else
 		{
@@ -533,11 +522,11 @@ class Character extends FNFSprite
 			flipX = !flipX;
 
 			// Doesn't flip for BF, since his are already in the right place???
-			if (!(curCharacter.startsWith('bf') || curCharacter.startsWith('pico')))
+			if (!(curCharacter.startsWith('bf')))
 				flipLeftRight();
 			//
 		}
-		else if (curCharacter.startsWith('bf') || curCharacter.startsWith('pico'))
+		else if (curCharacter.startsWith('bf'))
 			flipLeftRight();
 
 		if (adjustPos) {
@@ -554,16 +543,39 @@ class Character extends FNFSprite
 
 	function flipLeftRight():Void
 	{
+		if (animation.getByName('idle') != null)
+			playAnim('idle');
+		else
+			playAnim('danceLeft');
+		
+		var idleWidth = frameWidth;
+		playAnim('singUP');
+		animOffsets['singUP'].x = (frameWidth - idleWidth) - animOffsets['singUP'].x;
+		playAnim('singDOWN');
+		animOffsets['singDOWN'].x = (frameWidth - idleWidth) - animOffsets['singDOWN'].x;
+		playAnim('singLEFT');
+		animOffsets['singLEFT'].x = (frameWidth - idleWidth) - animOffsets['singLEFT'].x;
+		playAnim('singRIGHT');
+		animOffsets['singRIGHT'].x = (frameWidth - idleWidth) - animOffsets['singRIGHT'].x;
+
 		// swap left and right sprites
+		var oldRightOffset = animOffsets['singRIGHT'];
+		animOffsets['singRIGHT'] = animOffsets['singLEFT'];
+		animOffsets['singLEFT'] = oldRightOffset;
 		var oldRight = animation.getByName('singRIGHT').frames;
 		animation.getByName('singRIGHT').frames = animation.getByName('singLEFT').frames;
 		animation.getByName('singLEFT').frames = oldRight;
 		
 		if (animation.getByName('singRIGHTmiss') != null)
 		{
-			var oldRightMiss = animation.getByName('singRIGHTmiss').frames;
-			animation.getByName('singRIGHTmiss').frames = animation.getByName('singLEFTmiss').frames;
-			animation.getByName('singLEFTmiss').frames = oldRightMiss;
+			playAnim('singUPmiss');
+			animOffsets['singUPmiss'].x = (frameWidth - idleWidth) - animOffsets['singUPmiss'].x;
+			playAnim('singDOWNmiss');
+			animOffsets['singDOWNmiss'].x = (frameWidth - idleWidth) - animOffsets['singDOWNmiss'].x;
+			playAnim('singLEFTmiss');
+			animOffsets['singLEFTmiss'].x = (frameWidth - idleWidth) - animOffsets['singLEFTmiss'].x;
+			playAnim('singRIGHTmiss');
+			animOffsets['singRIGHTmiss'].x = (frameWidth - idleWidth) - animOffsets['singRIGHTmiss'].x;
 		}
 	}
 
