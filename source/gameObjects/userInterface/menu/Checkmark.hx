@@ -1,6 +1,7 @@
 package gameObjects.userInterface.menu;
 
 import meta.data.dependency.FNFSprite;
+import flixel.math.FlxPoint;
 
 using StringTools;
 
@@ -9,7 +10,7 @@ class Checkmark extends FNFSprite
 	public function new(x:Float, y:Float)
 	{
 		super(x, y);
-		animOffsets = new Map<String, Array<Dynamic>>();
+		animOffsets = new Map<String, FlxPoint>();
 	}
 
 	override public function update(elapsed:Float)

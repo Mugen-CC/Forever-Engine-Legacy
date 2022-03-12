@@ -210,34 +210,38 @@ class Character extends FNFSprite
 
 				playAnim('idle');
 			case 'pico':
-				tex = Paths.getSparrowAtlas('characters/Pico_FNF_assetss');
-				frames = tex;
+				frames = Paths.getSparrowAtlas('characters/Pico_FNF_assetss');
 				animation.addByPrefix('idle', "Pico Idle Dance", 24, false);
 				animation.addByPrefix('singUP', 'pico Up note0', 24, false);
 				animation.addByPrefix('singDOWN', 'Pico Down Note0', 24, false);
-				if (isPlayer)
-				{
-					animation.addByPrefix('singLEFT', 'Pico NOTE LEFT0', 24, false);
-					animation.addByPrefix('singRIGHT', 'Pico Note Right0', 24, false);
-					animation.addByPrefix('singRIGHTmiss', 'Pico Note Right Miss', 24, false);
-					animation.addByPrefix('singLEFTmiss', 'Pico NOTE LEFT miss', 24, false);
-				}
-				else
-				{
-					// Need to be flipped! REDO THIS LATER!
-					animation.addByPrefix('singLEFT', 'Pico Note Right0', 24, false);
-					animation.addByPrefix('singRIGHT', 'Pico NOTE LEFT0', 24, false);
-					animation.addByPrefix('singRIGHTmiss', 'Pico NOTE LEFT miss', 24, false);
-					animation.addByPrefix('singLEFTmiss', 'Pico Note Right Miss', 24, false);
-				}
+				animation.addByPrefix('singLEFT', 'Pico NOTE LEFT0', 24, false);
+				animation.addByPrefix('singRIGHT', 'Pico Note Right0', 24, false);
 
+				/*animation.addByPrefix('singRIGHTmiss', 'Pico Note Right Miss', 24, false);
+				animation.addByPrefix('singLEFTmiss', 'Pico NOTE LEFT miss', 24, false);
 				animation.addByPrefix('singUPmiss', 'pico Up note miss', 24);
-				animation.addByPrefix('singDOWNmiss', 'Pico Down Note MISS', 24);
+				animation.addByPrefix('singDOWNmiss', 'Pico Down Note MISS', 24);*/
 
 				playAnim('idle');
 
 				flipX = true;
+			case 'pico-mtf':
+				tex = Paths.getSparrowAtlas('characters/MTFPico');
+				frames = tex;
+				animation.addByPrefix('idle', "MTF Pico Idle Dance", 24, false);
+				animation.addByPrefix('singUP', 'pico Up note MTF', 24, false);
+				animation.addByPrefix('singDOWN', 'Pico Down Note MTF', 24, false);
+				animation.addByPrefix('singLEFT', 'Pico NOTE LEFT MTF', 24, false);
+				animation.addByPrefix('singRIGHT', 'Pico Note Right MTF', 24, false);
 
+				animation.addByPrefix('singRIGHTmiss', 'Pico Note Right miss MTF', 24, false);
+				animation.addByPrefix('singLEFTmiss', 'Pico NOTE LEFT Miss MTF', 24, false);
+				animation.addByPrefix('singUPmiss', 'pico Up note miss MTF', 24);
+				animation.addByPrefix('singDOWNmiss', 'Pico Down Note MISS MTF', 24);
+
+				playAnim('idle');
+
+				flipX = true;
 			case 'bf':
 				frames = Paths.getSparrowAtlas('characters/BOYFRIEND');
 
@@ -246,10 +250,12 @@ class Character extends FNFSprite
 				animation.addByPrefix('singLEFT', 'BF NOTE LEFT0', 24, false);
 				animation.addByPrefix('singRIGHT', 'BF NOTE RIGHT0', 24, false);
 				animation.addByPrefix('singDOWN', 'BF NOTE DOWN0', 24, false);
+
 				animation.addByPrefix('singUPmiss', 'BF NOTE UP MISS', 24, false);
 				animation.addByPrefix('singLEFTmiss', 'BF NOTE LEFT MISS', 24, false);
 				animation.addByPrefix('singRIGHTmiss', 'BF NOTE RIGHT MISS', 24, false);
 				animation.addByPrefix('singDOWNmiss', 'BF NOTE DOWN MISS', 24, false);
+				
 				animation.addByPrefix('hey', 'BF HEY', 24, false);
 				animation.addByPrefix('scared', 'BF idle shaking', 24);
 
@@ -458,6 +464,29 @@ class Character extends FNFSprite
 				animation.addByPrefix('singRIGHT-alt', 'Parent Right Note Mom', 24, false);
 
 				playAnim('idle');
+			case 'expunged':
+				// DAD ANIMATION LOADING CODE
+				frames = Paths.getSparrowAtlas('characters/EXPUNGED');
+				animation.addByPrefix('idle', 'EXPUNGED_idle', 24, false);
+				animation.addByPrefix('singUP', 'EXPUNGED_up', 24);
+				animation.addByPrefix('singRIGHT', 'EXPUNGED_right', 24);
+				animation.addByPrefix('singDOWN', 'EXPUNGED_down', 24);
+				animation.addByPrefix('singLEFT', 'EXPUNGED_left', 24);
+
+				characterData.offsetX = -100;
+				characterData.offsetY = -200;
+				characterData.camOffsetY = -100;
+				playAnim('idle');
+			case 'scp096':
+				// DAD ANIMATION LOADING CODE
+				frames = Paths.getSparrowAtlas('characters/SCP-096');
+				animation.addByPrefix('idle', '096_idle', 24, false);
+				animation.addByPrefix('singUP', '096_up', 24);
+				animation.addByPrefix('singRIGHT', '096_right', 24);
+				animation.addByPrefix('singDOWN', '096_down', 24);
+				animation.addByPrefix('singLEFT', '096_left', 24);
+
+				playAnim('idle');
 			default:
 				// set up animations if they aren't already
 
@@ -483,12 +512,18 @@ class Character extends FNFSprite
 		// set up offsets cus why not
 		if (OpenFlAssets.exists(Paths.offsetTxt(curCharacter + 'Offsets')))
 		{
+			trace("Found '" + curCharacter + "Offsets.txt'");
 			var characterOffsets:Array<String> = CoolUtil.coolTextFile(Paths.offsetTxt(curCharacter + 'Offsets'));
 			for (i in 0...characterOffsets.length)
 			{
 				var getterArray:Array<Array<String>> = CoolUtil.getOffsetsFromTxt(Paths.offsetTxt(curCharacter + 'Offsets'));
 				addOffset(getterArray[i][0], Std.parseInt(getterArray[i][1]), Std.parseInt(getterArray[i][2]));
 			}
+			trace(animOffsets);
+		}
+		else
+		{
+			trace("Did not find '" + curCharacter + "Offsets.txt'");
 		}
 
 		dance();
@@ -498,11 +533,11 @@ class Character extends FNFSprite
 			flipX = !flipX;
 
 			// Doesn't flip for BF, since his are already in the right place???
-			if (!curCharacter.startsWith('bf'))
+			if (!(curCharacter.startsWith('bf') || curCharacter.startsWith('pico')))
 				flipLeftRight();
 			//
 		}
-		else if (curCharacter.startsWith('bf'))
+		else if (curCharacter.startsWith('bf') || curCharacter.startsWith('pico'))
 			flipLeftRight();
 
 		if (adjustPos) {
@@ -519,22 +554,16 @@ class Character extends FNFSprite
 
 	function flipLeftRight():Void
 	{
-		// get the old right sprite
+		// swap left and right sprites
 		var oldRight = animation.getByName('singRIGHT').frames;
-
-		// set the right to the left
 		animation.getByName('singRIGHT').frames = animation.getByName('singLEFT').frames;
-
-		// set the left to the old right
 		animation.getByName('singLEFT').frames = oldRight;
-
-		// insert ninjamuffin screaming I think idk I'm lazy as hell
-
+		
 		if (animation.getByName('singRIGHTmiss') != null)
 		{
-			var oldMiss = animation.getByName('singRIGHTmiss').frames;
+			var oldRightMiss = animation.getByName('singRIGHTmiss').frames;
 			animation.getByName('singRIGHTmiss').frames = animation.getByName('singLEFTmiss').frames;
-			animation.getByName('singLEFTmiss').frames = oldMiss;
+			animation.getByName('singLEFTmiss').frames = oldRightMiss;
 		}
 	}
 
@@ -617,7 +646,9 @@ class Character extends FNFSprite
 	override public function playAnim(AnimName:String, Force:Bool = false, Reversed:Bool = false, Frame:Int = 0):Void
 	{
 		if (animation.getByName(AnimName) != null)
+		{
 			super.playAnim(AnimName, Force, Reversed, Frame);
+		}
 
 		if (curCharacter == 'gf')
 		{

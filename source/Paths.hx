@@ -189,7 +189,6 @@ class Paths
 		var levelPath = getLibraryPathForce(file, "mods");
 		if (OpenFlAssets.exists(levelPath, type))
 			return levelPath;
-
 		return getPreloadPath(file);
 	}
 
@@ -220,7 +219,11 @@ class Paths
 	inline static function getPreloadPath(file:String) {
 		var returnPath:String = 'assets/$file';
 		if (!FileSystem.exists(returnPath))
+		{
 			returnPath = CoolUtil.swapSpaceDash(returnPath);
+			if (file == 'images/characters/expungedOffsets.xml')
+				trace('Preloading $file');
+		}
 		return returnPath;
 	}
 

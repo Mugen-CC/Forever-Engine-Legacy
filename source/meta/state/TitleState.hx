@@ -158,7 +158,6 @@ class TitleState extends MusicBeatState
 		{
 			var fullText:String = Assets.getText(Paths.txt('introText'));
 			var firstArray:Array<String> = fullText.split('\n');
-
 			for (i in firstArray)
 				swagGoodArray.push(i.split('--'));
 		}

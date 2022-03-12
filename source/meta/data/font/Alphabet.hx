@@ -129,7 +129,7 @@ class Alphabet extends FlxSpriteGroup
 			var isNumber:Bool = AlphaCharacter.numbers.contains(character);
 			var isSymbol:Bool = AlphaCharacter.symbols.contains(character);
 
-			if ((AlphaCharacter.alphabet.indexOf(character.toLowerCase()) != -1) || (AlphaCharacter.numbers.contains(character)))
+			if ((AlphaCharacter.alphabet.indexOf(character.toLowerCase()) != -1) || isNumber)
 			{
 				if (xPosResetted)
 				{

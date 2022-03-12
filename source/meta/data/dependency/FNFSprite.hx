@@ -13,13 +13,13 @@ import flixel.system.FlxAssets.FlxGraphicAsset;
 **/
 class FNFSprite extends FlxSprite
 {
-	public var animOffsets:Map<String, Array<Dynamic>>;
+	public var animOffsets:Map<String, FlxPoint>;
 
 	public function new(x:Float = 0, y:Float = 0)
 	{
 		super(x, y);
 
-		animOffsets = new Map<String, Array<Dynamic>>();
+		animOffsets = new Map<String, FlxPoint>();
 	}
 
 	public function playAnim(AnimName:String, Force:Bool = false, Reversed:Bool = false, Frame:Int = 0):Void
@@ -29,7 +29,7 @@ class FNFSprite extends FlxSprite
 		var daOffset = animOffsets.get(AnimName);
 		if (animOffsets.exists(AnimName))
 		{
-			offset.set(daOffset[0], daOffset[1]);
+			offset.set(daOffset.x, daOffset.y);
 		}
 		else
 			offset.set(0, 0);
@@ -37,7 +37,7 @@ class FNFSprite extends FlxSprite
 
 	public function addOffset(name:String, x:Float = 0, y:Float = 0)
 	{
-		animOffsets[name] = [x, y];
+		animOffsets[name] = new FlxPoint(x, y);
 	}
 
 	override public function loadGraphic(Graphic:FlxGraphicAsset, Animated:Bool = false, Width:Int = 0, Height:Int = 0, Unique:Bool = false,
