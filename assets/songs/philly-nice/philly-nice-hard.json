@@ -4,7 +4,7 @@
         "bpm": 175.0,
         "needsVoices": true,
         "player1": "bf",
-        "player2": "pico",
+        "player2": "pico-mtf",
         "speed": 2.0,
         "notes": [
             {

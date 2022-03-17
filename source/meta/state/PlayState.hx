@@ -230,10 +230,10 @@ class PlayState extends MusicBeatState
 		 */
 
 		// set up characters here too
-		gf = new Character();
-		gf.adjustPos = false;
-		gf.setCharacter(300, 100, stageBuild.returnGFtype());
-		gf.scrollFactor.set(0.95, 0.95);
+			gf = new Character();
+			gf.adjustPos = false;
+			gf.setCharacter(300, 100, stageBuild.returnGFtype());
+			gf.scrollFactor.set(0.95, 0.95);
 
 		dadOpponent = new Character().setCharacter(50, 850, SONG.player2);
 		boyfriend = new Boyfriend();
@@ -250,7 +250,7 @@ class PlayState extends MusicBeatState
 			assetModifier = 'pixel';
 
 		// add characters
-		add(gf);
+		if (stageBuild.returnGFtype() != null) add(gf);
 
 		// add limo cus dumb layering
 		if (curStage == 'highway')
@@ -1427,6 +1427,7 @@ class PlayState extends MusicBeatState
 	private function charactersDance(curBeat:Int)
 	{
 		if ((curBeat % gfSpeed == 0) 
+			&& (gf.curCharacter != null)
 		&& ((gf.animation.curAnim.name.startsWith("idle")
 		|| gf.animation.curAnim.name.startsWith("dance"))))
 			gf.dance();

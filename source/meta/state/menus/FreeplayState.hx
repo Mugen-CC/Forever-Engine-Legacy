@@ -71,6 +71,7 @@ class FreeplayState extends MusicBeatState
 		**/
 		// load in all songs that exist in folder
 		var folderSongs:Array<String> = CoolUtil.returnAssetsLibrary('songs', 'assets');
+		trace(folderSongs);
 
 		///*
 		for (i in 0...Main.gameWeeks.length)

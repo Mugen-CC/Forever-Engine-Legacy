@@ -54,6 +54,7 @@ class TitleState extends MusicBeatState
 	{
 		controls.setKeyboardScheme(None, false);
 		curWacky = FlxG.random.getObject(getIntroTextShit());
+		trace(curWacky);
 		super.create();
 
 		startIntro();
@@ -159,7 +160,7 @@ class TitleState extends MusicBeatState
 			var fullText:String = Assets.getText(Paths.txt('introText'));
 			var firstArray:Array<String> = fullText.split('\n');
 			for (i in firstArray)
-				swagGoodArray.push(i.split('--'));
+				if(!i.startsWith('//')) swagGoodArray.push(i.split('--'));
 		}
 
 		return swagGoodArray;
@@ -316,8 +317,16 @@ class TitleState extends MusicBeatState
 			case 9:
 				createCoolText([curWacky[0]]);
 			// credTextShit.visible = true;
+			case 10:
+				if(curWacky.length == 3) addMoreText(curWacky[1]);
 			case 11:
-				addMoreText(curWacky[1]);
+				switch(curWacky.length)
+				{
+					case 3:
+						addMoreText(curWacky[2]);
+					case 2:
+						addMoreText(curWacky[1]);
+				}
 			// credTextShit.text += '\nlmao';
 			case 12:
 				deleteCoolText();

@@ -49,9 +49,19 @@ class StageMountains extends Stage
 		backCloud2 = addAsset('backCloud2', 0.05, 150);
 		addAsset('backMountains', 0.1);
 		backCloud = addAsset('backCloud', 0.12, -50);
-		addAsset('frontMountains', 0.3);
+		addAsset('frontMountains', 0.3,100);
 		frontCloud = addAsset('frontCloud', 0.34, 750);
 		addAsset('ground', 0.9);
+	}
+
+	override public function returnGFtype()
+	{
+		return null;
+	}
+
+	override public function repositionPlayers(boyfriend:Character, dad:Character, gf:Character):Void
+	{
+		boyfriend.x += 225;
 	}
 
 	function addAsset(assetName:String, scroll:Float, xOffset:Float = 0)

@@ -766,6 +766,7 @@ class OriginalChartingState extends MusicBeatState
 		if (_song.notes[sec] != null)
 		{
 			curSection = sec;
+			
 
 			updateGrid();
 
@@ -824,14 +825,15 @@ class OriginalChartingState extends MusicBeatState
 	{
 		if (check_mustHitSection.checked)
 		{
-			leftIcon.animation.play(_song.player1);
-			rightIcon.animation.play(_song.player2);
+			leftIcon.setPosition(0, -100);
+			rightIcon.setPosition(gridBG.width / 2, -100);
 		}
 		else
 		{
-			leftIcon.animation.play(_song.player2);
-			rightIcon.animation.play(_song.player1);
+			leftIcon.setPosition(gridBG.width / 2, -100);
+			rightIcon.setPosition(0, -100);
 		}
+		trace('updating heads');
 	}
 
 	function updateNoteUI():Void

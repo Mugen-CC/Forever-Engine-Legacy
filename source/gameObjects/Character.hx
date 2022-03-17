@@ -59,6 +59,8 @@ class Character extends FNFSprite
 
 		switch (curCharacter)
 		{
+			case null:
+				animation.destroyAnimations();
 			case 'gf':
 				// GIRLFRIEND CODE
 				tex = Paths.getSparrowAtlas('characters/GF_assets');
@@ -221,16 +223,15 @@ class Character extends FNFSprite
 				animation.addByPrefix('idle', "MTF Pico Idle Dance", 24, false);
 				animation.addByPrefix('singUP', 'pico Up note MTF', 24, false);
 				animation.addByPrefix('singDOWN', 'Pico Down Note MTF', 24, false);
-				animation.addByPrefix('singLEFT', 'Pico Note Right MTF', 24, false);
-				animation.addByPrefix('singRIGHT', 'Pico NOTE LEFT MTF', 24, false);
+				animation.addByPrefix('singLEFT', 'Pico NOTE LEFT MTF', 24, false);
+				animation.addByPrefix('singRIGHT', 'Pico Note Right MTF', 24, false);
 
-				animation.addByPrefix('singRIGHTmiss', 'Pico NOTE LEFT Miss MTF', 24, false);
-				animation.addByPrefix('singLEFTmiss', 'Pico Note Right miss MTF', 24, false);
+				animation.addByPrefix('singRIGHTmiss', 'Pico Note Right Miss MTF', 24, false);
+				animation.addByPrefix('singLEFTmiss', 'Pico NOTE LEFT miss MTF', 24, false);
 				animation.addByPrefix('singUPmiss', 'pico Up note miss MTF', 24);
 				animation.addByPrefix('singDOWNmiss', 'Pico Down Note MISS MTF', 24);
 
 				playAnim('idle');
-
 				flipX = true;
 			case 'bf':
 				frames = Paths.getSparrowAtlas('characters/BOYFRIEND');
@@ -477,6 +478,7 @@ class Character extends FNFSprite
 				animation.addByPrefix('singLEFT', '096_left', 24);
 
 				playAnim('idle');
+				characterData.camOffsetY = -50;
 			default:
 				// set up animations if they aren't already
 
@@ -522,11 +524,11 @@ class Character extends FNFSprite
 			flipX = !flipX;
 
 			// Doesn't flip for BF, since his are already in the right place???
-			if (!(curCharacter.startsWith('bf')))
+			if (!(curCharacter.startsWith('bf') || curCharacter == 'pico-mtf'))
 				flipLeftRight();
 			//
 		}
-		else if (curCharacter.startsWith('bf'))
+		else if (curCharacter.startsWith('bf') || curCharacter == 'pico-mtf')
 			flipLeftRight();
 
 		if (adjustPos) {
@@ -581,6 +583,7 @@ class Character extends FNFSprite
 
 	override function update(elapsed:Float)
 	{
+		if(curCharacter == null) return;
 		if (!isPlayer)
 		{
 			if (animation.curAnim.name.startsWith('sing'))
@@ -625,34 +628,34 @@ class Character extends FNFSprite
 	 */
 	public function dance(?forced:Bool = false)
 	{
-		if (!debugMode)
+		if (debugMode || (curCharacter == null)) return;
+		
+		var curCharSimplified:String = simplifyCharacter();
+		switch (curCharSimplified)
 		{
-			var curCharSimplified:String = simplifyCharacter();
-			switch (curCharSimplified)
-			{
-				case 'gf':
-					if ((!animation.curAnim.name.startsWith('hair')) && (!animation.curAnim.name.startsWith('sad')))
-					{
-						danced = !danced;
+			case 'gf':
+				if ((!animation.curAnim.name.startsWith('hair')) && (!animation.curAnim.name.startsWith('sad')))
+				{
+					danced = !danced;
 
-						if (danced)
-							playAnim('danceRight', forced);
-						else
-							playAnim('danceLeft', forced);
-					}
-				default:
-					// Left/right dancing, think Skid & Pump
-					if (animation.getByName('danceLeft') != null && animation.getByName('danceRight') != null) {
-						danced = !danced;
-						if (danced)
-							playAnim('danceRight', forced);
-						else
-							playAnim('danceLeft', forced);
-					}
+					if (danced)
+						playAnim('danceRight', forced);
 					else
-						playAnim('idle', forced);
-			}
+						playAnim('danceLeft', forced);
+				}
+			default:
+				// Left/right dancing, think Skid & Pump
+				if (animation.getByName('danceLeft') != null && animation.getByName('danceRight') != null) {
+					danced = !danced;
+					if (danced)
+						playAnim('danceRight', forced);
+					else
+						playAnim('danceLeft', forced);
+				}
+				else
+					playAnim('idle', forced);
 		}
+		
 	}
 
 	override public function playAnim(AnimName:String, Force:Bool = false, Reversed:Bool = false, Frame:Int = 0):Void

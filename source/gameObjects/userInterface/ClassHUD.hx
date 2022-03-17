@@ -74,7 +74,7 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 		add(iconP1);
 
 		iconP2 = new HealthIcon(SONG.player2, false);
-		iconP2.y = healthBar.y - (iconP2.height / 2);
+		iconP2.y = healthBar.y - (iconP1.height / 2);
 		add(iconP2);
 
 		scoreBar = new FlxText(FlxG.width / 2, healthBarBG.y + 40, 0, scoreDisplay, 20);

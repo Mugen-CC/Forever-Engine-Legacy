@@ -57,7 +57,7 @@ class Stage extends FlxTypedGroup<FlxBasic>
 				curStage = 'school';
 			case 'thorns':
 				curStage = 'schoolEvil';
-			case 'test':
+			case 'test' | 'unfairness' | 'funny-scream' | 'scopophobia':
 				curStage = 'mountains';
 			default:
 				curStage = 'stage';
@@ -65,7 +65,7 @@ class Stage extends FlxTypedGroup<FlxBasic>
 		trace('Stage "$curStage" created.');
 		switch (curStage)
 		{
-			/*case 'stage':
+			case 'stage':
 				return new StageStage();
 			case 'spooky':
 				return new StageSpooky();
@@ -80,9 +80,11 @@ class Stage extends FlxTypedGroup<FlxBasic>
 			case 'school':
 				return new StageSchool();
 			case 'schoolEvil':
-				return new StageSchoolEvil();*/
-			default:
+				return new StageSchoolEvil();
+			case 'mountains':
 				return new StageMountains();
+			default:
+				return new StageStage();
 		}
 	}
 
