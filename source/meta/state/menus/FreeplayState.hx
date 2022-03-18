@@ -1,5 +1,5 @@
 package meta.state.menus;
-
+import haxe.Exception;
 import flash.text.TextField;
 import flixel.FlxG;
 import flixel.FlxSprite;
@@ -97,7 +97,9 @@ class FreeplayState extends MusicBeatState
 				}
 			}
 		}
-
+		//Adds fake 2747 song
+		songs.push(new SongMetadata('lucid chalice', 1, 'scp2747', FlxColor.BLACK));
+		existingDifficulties.push(['HARD']);
 		// LOAD MUSIC
 		// ForeverTools.resetMenuMusic();
 
@@ -230,6 +232,7 @@ class FreeplayState extends MusicBeatState
 			var poop:String = Highscore.formatSong(songs[curSelected].songName.toLowerCase(),
 				CoolUtil.difficultyArray.indexOf(existingDifficulties[curSelected][curDifficulty]));
 
+			if (songs[curSelected].songName == 'lucid chalice') throw new Exception('[DATA LOST]');
 			PlayState.SONG = Song.loadFromJson(poop, songs[curSelected].songName.toLowerCase());
 			PlayState.isStoryMode = false;
 			PlayState.storyDifficulty = curDifficulty;

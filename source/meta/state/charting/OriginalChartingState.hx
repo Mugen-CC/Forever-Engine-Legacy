@@ -833,7 +833,6 @@ class OriginalChartingState extends MusicBeatState
 			leftIcon.setPosition(gridBG.width / 2, -100);
 			rightIcon.setPosition(0, -100);
 		}
-		trace('updating heads');
 	}
 
 	function updateNoteUI():Void

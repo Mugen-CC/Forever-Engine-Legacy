@@ -253,13 +253,16 @@ class TitleState extends MusicBeatState
 		}
 	}
 
-	function addMoreText(text:String)
+	function addMoreText(textArray:Array<String>)
 	{
-		var coolText:Alphabet = new Alphabet(0, 0, text, true, false);
-		coolText.screenCenter(X);
-		coolText.y += (textGroup.length * 60) + 200;
-		credGroup.add(coolText);
-		textGroup.add(coolText);
+		for (i in 0...textArray.length)
+		{
+			var coolText:Alphabet = new Alphabet(0, 0, textArray[i], true, false);
+			coolText.screenCenter(X);
+			coolText.y += (textGroup.length * 60) + 200;
+			credGroup.add(coolText);
+			textGroup.add(coolText);
+		}
 	}
 
 	function deleteCoolText()
@@ -288,11 +291,11 @@ class TitleState extends MusicBeatState
 		switch (curBeat)
 		{
 			case 1:
-				createCoolText(['ninjamuffin', 'phantomArcade', 'kawaisprite', 'evilsker']);
+				createCoolText(['special thanks to']);
 
 			// credTextShit.visible = true;
 			case 3:
-				addMoreText('present');
+				addMoreText(['ninjamuffin', 'phantomArcade', 'kawaisprite', 'evilsker']);
 			// credTextShit.text += '\npresent...';
 			// credTextShit.addText();
 			case 4:
@@ -303,7 +306,7 @@ class TitleState extends MusicBeatState
 			case 5:
 				createCoolText(['In association', 'with']);
 			case 7:
-				addMoreText('newgrounds');
+				addMoreText(['newgrounds']);
 				ngSpr.visible = true;
 			// credTextShit.text += '\nNewgrounds';
 
@@ -318,14 +321,14 @@ class TitleState extends MusicBeatState
 				createCoolText([curWacky[0]]);
 			// credTextShit.visible = true;
 			case 10:
-				if(curWacky.length == 3) addMoreText(curWacky[1]);
+				if(curWacky.length == 3) addMoreText([curWacky[1]]);
 			case 11:
 				switch(curWacky.length)
 				{
 					case 3:
-						addMoreText(curWacky[2]);
+						addMoreText([curWacky[2]]);
 					case 2:
-						addMoreText(curWacky[1]);
+						addMoreText([curWacky[1]]);
 				}
 			// credTextShit.text += '\nlmao';
 			case 12:
@@ -334,13 +337,13 @@ class TitleState extends MusicBeatState
 			// credTextShit.text = "Friday";
 			// credTextShit.screenCenter();
 			case 13:
-				addMoreText('Friday');
+				addMoreText(['Friday']);
 			// credTextShit.visible = true;
 			case 14:
-				addMoreText('Night');
+				addMoreText(['Night']);
 			// credTextShit.text += '\nNight';
 			case 15:
-				addMoreText('Funkin'); // credTextShit.text += '\nFunkin';
+				addMoreText(['Funkin']); // credTextShit.text += '\nFunkin';
 
 			case 16:
 				skipIntro();
