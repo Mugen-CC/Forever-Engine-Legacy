@@ -16,6 +16,7 @@ import haxe.Exception;
 import lime.utils.Assets;
 import meta.MusicBeat.MusicBeatState;
 import meta.data.*;
+import meta.data.Highscore.ScoreMetaData;
 import meta.data.Song.SwagSong;
 import meta.data.dependency.Discord;
 import meta.data.font.Alphabet;
@@ -25,6 +26,7 @@ import sys.thread.Mutex;
 import sys.thread.Thread;
 
 using StringTools;
+
 
 class FreeplayState extends MusicBeatState
 {
@@ -37,9 +39,11 @@ class FreeplayState extends MusicBeatState
 	var curDifficulty:Int = 1;
 
 	var scoreText:FlxText;
+	var accuracyText:FlxText;
+	var comboBreakText:FlxText;
 	var diffText:FlxText;
-	var lerpScore:Int = 0;
-	var intendedScore:Int = 0;
+	var lerpScore:ScoreMetaData = new ScoreMetaData();
+	var intendedScore:ScoreMetaData;
 
 	var songThread:Thread;
 	var threadActive:Bool = true;
@@ -135,18 +139,25 @@ class FreeplayState extends MusicBeatState
 
 		scoreText = new FlxText(FlxG.width * 0.7, 5, 0, "", 32);
 		scoreText.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, RIGHT);
+		accuracyText = new FlxText(FlxG.width * 0.7, 40, 0, "", 32);
+		accuracyText.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, RIGHT);
+		comboBreakText = new FlxText(FlxG.width * 0.7, 75, 0, "", 32);
+		comboBreakText.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, RIGHT);
 
-		scoreBG = new FlxSprite(scoreText.x - scoreText.width, 0).makeGraphic(Std.int(FlxG.width * 0.35), 66, 0xFF000000);
+		var scoreBGx = Math.min(Math.min(scoreText.x - scoreText.width, accuracyText.x - accuracyText.width), comboBreakText.x - comboBreakText.width);
+		scoreBG = new FlxSprite(scoreBGx, 0).makeGraphic(Std.int(FlxG.width * 0.35), 144, 0xFF000000);
 		scoreBG.alpha = 0.6;
 		add(scoreBG);
 
-		diffText = new FlxText(scoreText.x, scoreText.y + 36, 0, "", 24);
+		diffText = new FlxText(scoreText.x, comboBreakText.y + 36, 0, "", 24);
 		diffText.alignment = CENTER;
 		diffText.font = scoreText.font;
 		diffText.x = scoreBG.getGraphicMidpoint().x;
 		add(diffText);
 
 		add(scoreText);
+		add(accuracyText);
+		add(comboBreakText);
 
 		changeSelection();
 		changeDiff();
@@ -201,10 +212,14 @@ class FreeplayState extends MusicBeatState
 		FlxTween.color(bg, 0.35, bg.color, mainColor);
 
 		var lerpVal = Main.framerateAdjust(0.1);
-		lerpScore = Math.floor(FlxMath.lerp(lerpScore, intendedScore, lerpVal));
+		lerpScore = ScoreMetaData.lerp(lerpScore, intendedScore, lerpVal);
 
-		if (Math.abs(lerpScore - intendedScore) <= 10)
-			lerpScore = intendedScore;
+		if (Math.abs(lerpScore.score - intendedScore.score) <= 10)
+			lerpScore.score = intendedScore.score;
+		if (Math.abs(lerpScore.accuracy - intendedScore.accuracy) <= 0.01)
+			lerpScore.accuracy = intendedScore.accuracy;
+		if (Math.abs(lerpScore.comboBreaks - intendedScore.comboBreaks) <= 1)
+			lerpScore.comboBreaks = intendedScore.comboBreaks;
 
 		var upP = controls.UI_UP_P;
 		var downP = controls.UI_DOWN_P;
@@ -229,12 +244,12 @@ class FreeplayState extends MusicBeatState
 		if (accepted)
 		{
 			var poop:String = Highscore.formatSong(songs[selectedSong].songName.toLowerCase(),
-				CoolUtil.difficultyArray.indexOf(existingDifficulties[selectedSong][curDifficulty]));
+				CoolUtil.numberFromDifficulty(existingDifficulties[selectedSong][curDifficulty]));
 
 			if (songs[selectedSong].songName == 'lucid chalice') throw new Exception('[DATA LOST]');
 			PlayState.SONG = Song.loadFromJson(poop, songs[selectedSong].songName.toLowerCase());
 			PlayState.isStoryMode = false;
-			PlayState.storyDifficulty = CoolUtil.difficultyArray.indexOf(existingDifficulties[selectedSong][curDifficulty]);
+			PlayState.storyDifficulty = CoolUtil.numberFromDifficulty(existingDifficulties[selectedSong][curDifficulty]);
 
 			PlayState.storyWeek = songs[selectedSong].week;
 			trace('CUR WEEK' + PlayState.storyWeek);
@@ -248,11 +263,26 @@ class FreeplayState extends MusicBeatState
 		}
 
 		// Adhere the position of all the things (I'm sorry it was just so ugly before I had to fix it Shubs)
-		scoreText.text = "PERSONAL BEST:" + lerpScore;
-		scoreText.x = FlxG.width - scoreText.width - 5;
-		scoreBG.width = scoreText.width + 8;
+		scoreText.text = 'HIGH SCORE:${lerpScore.score}';
+		var accuracyString:String = Std.string((Std.int(lerpScore.accuracy * 100)) / 100);
+		if (lerpScore.accuracy != intendedScore.accuracy)
+		{
+			var ptIndex:Int = accuracyString.indexOf('.');
+			if(ptIndex == -1) accuracyString += '.00';
+			else{
+				var remainingZeroes:Int = 2-(accuracyString.length-ptIndex-1);
+				for(i in 0...remainingZeroes) accuracyString += '0';
+			}
+		}
+		accuracyText.text = 'BEST ACCURACY:$accuracyString%';
+		comboBreakText.text = "COMBO BREAKS:" + (intendedScore.comboBreaks == -1 ? 'N/A' : Std.string(lerpScore.comboBreaks));
+		var maxWidth = Math.max(Math.max(scoreText.width, accuracyText.width), comboBreakText.width);
+		scoreBG.width = maxWidth + 8;
 		scoreBG.x = FlxG.width - scoreBG.width;
-		diffText.x = scoreBG.x + (scoreBG.width / 2) - (diffText.width / 2);
+		scoreText.x = scoreBG.x + (maxWidth - scoreText.width)/ 2;
+		accuracyText.x = scoreBG.x + (maxWidth - accuracyText.width) / 2;
+		comboBreakText.x = scoreBG.x + (maxWidth - comboBreakText.width) / 2;
+		diffText.x = scoreBG.x + (maxWidth - diffText.width) / 2;
 
 		mutex.acquire();
 		if (songToPlay != null)
@@ -284,7 +314,7 @@ class FreeplayState extends MusicBeatState
 		if (curDifficulty > existingDifficulties[selectedSong].length - 1)
 			curDifficulty = 0;
 
-		intendedScore = Highscore.getScore(songs[selectedSong].songName, curDifficulty);
+		intendedScore = Highscore.getScore(songs[selectedSong].songName, CoolUtil.numberFromDifficulty(existingDifficulties[selectedSong][curDifficulty]));
 
 		diffText.text = '< ' + existingDifficulties[selectedSong][curDifficulty] + ' >';
 		lastDifficulty = existingDifficulties[selectedSong][curDifficulty];
@@ -303,7 +333,7 @@ class FreeplayState extends MusicBeatState
 
 		// selector.y = (70 * selectedSong) + 30;
 
-		intendedScore = Highscore.getScore(songs[selectedSong].songName, curDifficulty);
+		intendedScore = Highscore.getScore(songs[selectedSong].songName, CoolUtil.numberFromDifficulty(existingDifficulties[selectedSong][curDifficulty]));
 
 		// set up color stuffs
 		mainColor = songs[selectedSong].songColor;

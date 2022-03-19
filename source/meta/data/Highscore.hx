@@ -1,50 +1,69 @@
 package meta.data;
 
 import flixel.FlxG;
+import flixel.math.FlxMath;
 
 using StringTools;
 
+class ScoreMetaData
+{
+	public var score:Int = 0;
+	public var accuracy:Float = 0;
+	public var comboBreaks:Int = -1;
+	public function new(){}
+
+	public static function lerp(lerpScore:ScoreMetaData, intendedScore:ScoreMetaData, lerpVal:Float)
+	{
+		var resultScore:ScoreMetaData = new ScoreMetaData();
+		resultScore.score = Math.floor(FlxMath.lerp(lerpScore.score, intendedScore.score, lerpVal));
+		resultScore.accuracy = FlxMath.lerp(lerpScore.accuracy, intendedScore.accuracy, lerpVal);
+		resultScore.comboBreaks = Math.floor(FlxMath.lerp(lerpScore.comboBreaks, intendedScore.comboBreaks, lerpVal));
+
+		return resultScore;
+	}
+}
 class Highscore
 {
 	#if (haxe >= "4.0.0")
-	public static var songScores:Map<String, Int> = new Map();
+	public static var songScores:Map<String, ScoreMetaData> = new Map();
 	#else
-	public static var songScores:Map<String, Int> = new Map<String, Int>();
+	public static var songScores:Map<String, ScoreMetaData> = new Map<String, ScoreMetaData>();
 	#end
 
-	public static function saveScore(song:String, score:Int = 0, ?diff:Int = 0):Void
+	public static function saveScore(song:String, score:Int = 0, accuracy:Float = 0, combobreaks:Int = -1, ?diff:Int = 0):Void
 	{
 		var daSong:String = formatSong(song, diff);
-
-		if (songScores.exists(daSong))
-		{
-			if (songScores.get(daSong) < score)
-				setScore(daSong, score);
-		}
-		else
-			setScore(daSong, score);
+		updateScore(daSong, score, accuracy, combobreaks);
 	}
 
-	public static function saveWeekScore(week:Int = 1, score:Int = 0, ?diff:Int = 0):Void
+	public static function saveWeekScore(week:Int = 1, score:Int = 0, accuracy:Float = 0, combobreaks:Int = -1, ?diff:Int = 0):Void
 	{
 		var daWeek:String = formatSong('week' + week, diff);
-
-		if (songScores.exists(daWeek))
-		{
-			if (songScores.get(daWeek) < score)
-				setScore(daWeek, score);
-		}
-		else
-			setScore(daWeek, score);
+		updateScore(daWeek, score, accuracy, combobreaks);
 	}
 
 	/**
 	 * YOU SHOULD FORMAT SONG WITH formatSong() BEFORE TOSSING IN SONG VARIABLE
 	 */
-	static function setScore(song:String, score:Int):Void
+	static function updateScore(song:String, score:Int = 0, accuracy:Float = 0, combobreaks:Int = -1, ?diff:Int = 0):Void
 	{
 		// Reminder that I don't need to format this song, it should come formatted!
-		songScores.set(song, score);
+		if (!songScores.exists(song))
+		{
+			songScores.set(song, new ScoreMetaData());
+		}
+		else
+		{
+			var scoreMetaData:ScoreMetaData = songScores.get(song);
+			if (scoreMetaData.score < score)
+				scoreMetaData.score = score;
+			if (scoreMetaData.accuracy < accuracy)
+				scoreMetaData.accuracy = accuracy;
+			if (scoreMetaData.comboBreaks == -1 || scoreMetaData.comboBreaks > combobreaks)
+				scoreMetaData.comboBreaks = combobreaks;
+
+			songScores.set(song, scoreMetaData);
+		}
 		FlxG.save.data.songScores = songScores;
 		FlxG.save.flush();
 	}
@@ -54,25 +73,24 @@ class Highscore
 		var daSong:String = song;
 
 		var difficulty:String = '-' + CoolUtil.difficultyFromNumber(diff).toLowerCase();
-		difficulty = difficulty.replace('-euclid', '');
 
 		daSong += difficulty;
 
 		return daSong;
 	}
 
-	public static function getScore(song:String, diff:Int):Int
+	public static function getScore(song:String, diff:Int):ScoreMetaData
 	{
 		if (!songScores.exists(formatSong(song, diff)))
-			setScore(formatSong(song, diff), 0);
+			updateScore(formatSong(song, diff));
 
 		return songScores.get(formatSong(song, diff));
 	}
 
-	public static function getWeekScore(week:Int, diff:Int):Int
+	public static function getWeekScore(week:Int, diff:Int):ScoreMetaData
 	{
 		if (!songScores.exists(formatSong('week' + week, diff)))
-			setScore(formatSong('week' + week, diff), 0);
+			updateScore(formatSong('week' + week, diff));
 
 		return songScores.get(formatSong('week' + week, diff));
 	}
@@ -83,5 +101,11 @@ class Highscore
 		{
 			songScores = FlxG.save.data.songScores;
 		}
+	}
+
+	public static function clear():Void
+	{
+		FlxG.save.data.songScores = new Map<String, ScoreMetaData>();
+		FlxG.save.flush();
 	}
 }

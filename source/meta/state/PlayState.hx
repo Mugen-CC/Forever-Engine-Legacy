@@ -1541,7 +1541,7 @@ class PlayState extends MusicBeatState
 		songMusic.volume = 0;
 		vocals.volume = 0;
 		if (SONG.validScore)
-			Highscore.saveScore(SONG.song, songScore, storyDifficulty);
+			Highscore.saveScore(SONG.song, songScore, Timings.getAccuracy(), misses, storyDifficulty);
 
 		if (!isStoryMode)
 		{
@@ -1570,7 +1570,7 @@ class PlayState extends MusicBeatState
 
 				// save the week's score if the score is valid
 				if (SONG.validScore)
-					Highscore.saveWeekScore(storyWeek, campaignScore, storyDifficulty);
+					Highscore.saveWeekScore(storyWeek, campaignScore, Timings.getAccuracy(), misses, storyDifficulty);
 
 				// flush the save
 				FlxG.save.flush();
@@ -1609,7 +1609,6 @@ class PlayState extends MusicBeatState
 	private function callDefaultSongEnd()
 	{
 		var difficulty:String = '-' + CoolUtil.difficultyFromNumber(storyDifficulty).toLowerCase();
-		difficulty = difficulty.replace('-euclid', '');
 
 		FlxTransitionableState.skipNextTransIn = true;
 		FlxTransitionableState.skipNextTransOut = true;

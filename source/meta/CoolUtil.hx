@@ -19,7 +19,10 @@ class CoolUtil
 	{
 		return difficultyArray[number];
 	}
-
+	public static function numberFromDifficulty(difficulty:String):Int
+	{
+		return difficultyArray.indexOf(difficulty);
+	}
 	public static function dashToSpace(string:String):String
 	{
 		return string.replace("-", " ");
