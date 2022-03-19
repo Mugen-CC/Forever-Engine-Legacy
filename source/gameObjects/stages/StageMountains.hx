@@ -54,9 +54,10 @@ class StageMountains extends Stage
 		addAsset('ground', 0.9);
 	}
 
-	override public function returnGFtype()
+	override public function returnGFtype(song:String = "")
 	{
-		return null;
+		if(song == "Funny Scream") return null;
+		return 'gf';
 	}
 
 	override public function repositionPlayers(boyfriend:Character, dad:Character, gf:Character):Void

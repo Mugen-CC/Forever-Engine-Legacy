@@ -89,7 +89,7 @@ class Stage extends FlxTypedGroup<FlxBasic>
 	}
 
 	// return the girlfriend's type
-	public function returnGFtype()
+	public function returnGFtype(song:String = "")
 	{
 		return 'gf';
 	}

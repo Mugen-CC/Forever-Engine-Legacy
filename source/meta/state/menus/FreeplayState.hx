@@ -1,5 +1,4 @@
 package meta.state.menus;
-import haxe.Exception;
 import flash.text.TextField;
 import flixel.FlxG;
 import flixel.FlxSprite;
@@ -13,6 +12,7 @@ import flixel.tweens.FlxTween;
 import flixel.tweens.misc.ColorTween;
 import flixel.util.FlxColor;
 import gameObjects.userInterface.HealthIcon;
+import haxe.Exception;
 import lime.utils.Assets;
 import meta.MusicBeat.MusicBeatState;
 import meta.data.*;
@@ -32,7 +32,7 @@ class FreeplayState extends MusicBeatState
 	var songs:Array<SongMetadata> = [];
 
 	var selector:FlxText;
-	var curSelected:Int = 0;
+	var selectedSong:Int = 0;
 	var curSongPlaying:Int = -1;
 	var curDifficulty:Int = 1;
 
@@ -99,7 +99,7 @@ class FreeplayState extends MusicBeatState
 		}
 		//Adds fake 2747 song
 		songs.push(new SongMetadata('lucid chalice', 1, 'scp2747', FlxColor.BLACK));
-		existingDifficulties.push(['HARD']);
+		existingDifficulties.push(['KETER']);
 		// LOAD MUSIC
 		// ForeverTools.resetMenuMusic();
 
@@ -165,8 +165,7 @@ class FreeplayState extends MusicBeatState
 		///*
 		var coolDifficultyArray = [];
 		for (i in CoolUtil.difficultyArray)
-			if (FileSystem.exists(Paths.songJson(songName, songName + '-' + i))
-				|| (FileSystem.exists(Paths.songJson(songName, songName)) && i == "NORMAL"))
+			if (FileSystem.exists(Paths.songJson(songName, songName + '-' + i)))
 				coolDifficultyArray.push(i);
 
 		if (coolDifficultyArray.length > 0)
@@ -229,15 +228,15 @@ class FreeplayState extends MusicBeatState
 
 		if (accepted)
 		{
-			var poop:String = Highscore.formatSong(songs[curSelected].songName.toLowerCase(),
-				CoolUtil.difficultyArray.indexOf(existingDifficulties[curSelected][curDifficulty]));
+			var poop:String = Highscore.formatSong(songs[selectedSong].songName.toLowerCase(),
+				CoolUtil.difficultyArray.indexOf(existingDifficulties[selectedSong][curDifficulty]));
 
-			if (songs[curSelected].songName == 'lucid chalice') throw new Exception('[DATA LOST]');
-			PlayState.SONG = Song.loadFromJson(poop, songs[curSelected].songName.toLowerCase());
+			if (songs[selectedSong].songName == 'lucid chalice') throw new Exception('[DATA LOST]');
+			PlayState.SONG = Song.loadFromJson(poop, songs[selectedSong].songName.toLowerCase());
 			PlayState.isStoryMode = false;
-			PlayState.storyDifficulty = curDifficulty;
+			PlayState.storyDifficulty = CoolUtil.difficultyArray.indexOf(existingDifficulties[selectedSong][curDifficulty]);
 
-			PlayState.storyWeek = songs[curSelected].week;
+			PlayState.storyWeek = songs[selectedSong].week;
 			trace('CUR WEEK' + PlayState.storyWeek);
 
 			if (FlxG.sound.music != null)
@@ -277,37 +276,37 @@ class FreeplayState extends MusicBeatState
 	{
 		curDifficulty += change;
 		if (lastDifficulty != null && change != 0)
-			while (existingDifficulties[curSelected][curDifficulty] == lastDifficulty)
+			while (existingDifficulties[selectedSong][curDifficulty] == lastDifficulty)
 				curDifficulty += change;
 
 		if (curDifficulty < 0)
-			curDifficulty = existingDifficulties[curSelected].length - 1;
-		if (curDifficulty > existingDifficulties[curSelected].length - 1)
+			curDifficulty = existingDifficulties[selectedSong].length - 1;
+		if (curDifficulty > existingDifficulties[selectedSong].length - 1)
 			curDifficulty = 0;
 
-		intendedScore = Highscore.getScore(songs[curSelected].songName, curDifficulty);
+		intendedScore = Highscore.getScore(songs[selectedSong].songName, curDifficulty);
 
-		diffText.text = '< ' + existingDifficulties[curSelected][curDifficulty] + ' >';
-		lastDifficulty = existingDifficulties[curSelected][curDifficulty];
+		diffText.text = '< ' + existingDifficulties[selectedSong][curDifficulty] + ' >';
+		lastDifficulty = existingDifficulties[selectedSong][curDifficulty];
 	}
 
 	function changeSelection(change:Int = 0)
 	{
 		FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
 
-		curSelected += change;
+		selectedSong += change;
 
-		if (curSelected < 0)
-			curSelected = songs.length - 1;
-		if (curSelected >= songs.length)
-			curSelected = 0;
+		if (selectedSong < 0)
+			selectedSong = songs.length - 1;
+		if (selectedSong >= songs.length)
+			selectedSong = 0;
 
-		// selector.y = (70 * curSelected) + 30;
+		// selector.y = (70 * selectedSong) + 30;
 
-		intendedScore = Highscore.getScore(songs[curSelected].songName, curDifficulty);
+		intendedScore = Highscore.getScore(songs[selectedSong].songName, curDifficulty);
 
 		// set up color stuffs
-		mainColor = songs[curSelected].songColor;
+		mainColor = songs[selectedSong].songColor;
 
 		// song switching stuffs
 
@@ -318,11 +317,11 @@ class FreeplayState extends MusicBeatState
 			iconArray[i].alpha = 0.6;
 		}
 
-		iconArray[curSelected].alpha = 1;
+		iconArray[selectedSong].alpha = 1;
 
 		for (item in grpSongs.members)
 		{
-			item.targetY = bullShit - curSelected;
+			item.targetY = bullShit - selectedSong;
 			bullShit++;
 
 			item.alpha = 0.6;
@@ -336,7 +335,7 @@ class FreeplayState extends MusicBeatState
 		}
 		//
 
-		trace("curSelected: " + curSelected);
+		trace("selectedSong: " + selectedSong);
 
 		changeDiff();
 		changeSongPlaying();
@@ -359,19 +358,19 @@ class FreeplayState extends MusicBeatState
 					var index:Null<Int> = Thread.readMessage(false);
 					if (index != null)
 					{
-						if (index == curSelected && index != curSongPlaying)
+						if (index == selectedSong && index != curSongPlaying)
 						{
 							trace("Loading index " + index);
 
-							var inst:Sound = Paths.inst(songs[curSelected].songName);
+							var inst:Sound = Paths.inst(songs[selectedSong].songName);
 
-							if (index == curSelected && threadActive)
+							if (index == selectedSong && threadActive)
 							{
 								mutex.acquire();
 								songToPlay = inst;
 								mutex.release();
 
-								curSongPlaying = curSelected;
+								curSongPlaying = selectedSong;
 							}
 							else
 								trace("Nevermind, skipping " + index);
@@ -383,7 +382,7 @@ class FreeplayState extends MusicBeatState
 			});
 		}
 
-		songThread.sendMessage(curSelected);
+		songThread.sendMessage(selectedSong);
 	}
 
 	var playingSongs:Array<FlxSound> = [];

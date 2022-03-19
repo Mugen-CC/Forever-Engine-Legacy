@@ -125,8 +125,6 @@ class PlayState extends MusicBeatState
 
 	public static var songScore:Int = 0;
 
-	var storyDifficultyText:String = "";
-
 	public static var iconRPC:String = "";
 
 	public static var songLength:Float = 0;
@@ -232,7 +230,7 @@ class PlayState extends MusicBeatState
 		// set up characters here too
 			gf = new Character();
 			gf.adjustPos = false;
-			gf.setCharacter(300, 100, stageBuild.returnGFtype());
+			gf.setCharacter(300, 100, stageBuild.returnGFtype(SONG.song));
 			gf.scrollFactor.set(0.95, 0.95);
 
 		dadOpponent = new Character().setCharacter(50, 850, SONG.player2);
@@ -1611,7 +1609,7 @@ class PlayState extends MusicBeatState
 	private function callDefaultSongEnd()
 	{
 		var difficulty:String = '-' + CoolUtil.difficultyFromNumber(storyDifficulty).toLowerCase();
-		difficulty = difficulty.replace('-normal', '');
+		difficulty = difficulty.replace('-euclid', '');
 
 		FlxTransitionableState.skipNextTransIn = true;
 		FlxTransitionableState.skipNextTransOut = true;

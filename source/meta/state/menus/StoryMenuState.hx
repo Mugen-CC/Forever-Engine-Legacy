@@ -21,7 +21,7 @@ using StringTools;
 class StoryMenuState extends MusicBeatState
 {
 	var scoreText:FlxText;
-	var curDifficulty:Int = 1;
+	var curDifficulty:Int = 2;
 
 	public static var weekUnlocked:Array<Bool> = [true, true, true, true, true, true, true];
 
@@ -274,7 +274,7 @@ class StoryMenuState extends MusicBeatState
 			selectedWeek = true;
 
 			var diffic:String = '-' + CoolUtil.difficultyFromNumber(curDifficulty).toLowerCase();
-			diffic = diffic.replace('-normal', '');
+			diffic = diffic.replace('-euclid', '');
 
 			PlayState.storyDifficulty = curDifficulty;
 

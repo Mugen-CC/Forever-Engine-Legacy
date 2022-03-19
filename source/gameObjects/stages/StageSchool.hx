@@ -107,7 +107,7 @@ class StageSchool extends Stage
 	}
 
 	// return the girlfriend's type
-	override  public function returnGFtype()
+	override public function returnGFtype(song:String = "")
 	{
 		return 'gf-pixel';
 	}

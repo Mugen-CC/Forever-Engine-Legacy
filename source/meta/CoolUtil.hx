@@ -12,8 +12,8 @@ import sys.FileSystem;
 class CoolUtil
 {
 	// tymgus45
-	public static var difficultyArray:Array<String> = ['EASY', "NORMAL", "HARD"];
-	public static var difficultyLength = difficultyArray.length;
+	public static var difficultyArray:Array<String> = ['SAFE', "EUCLID", "KETER", "APPOLYON"];
+	public static var difficultyLength:Int = difficultyArray.length;
 
 	public static function difficultyFromNumber(number:Int):String
 	{
