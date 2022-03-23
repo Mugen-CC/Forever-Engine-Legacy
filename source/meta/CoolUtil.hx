@@ -12,7 +12,7 @@ import sys.FileSystem;
 class CoolUtil
 {
 	// tymgus45
-	public static var difficultyArray:Array<String> = ['SAFE', "EUCLID", "KETER", "APPOLYON"];
+	public static var difficultyArray:Array<String> = ['SAFE', "EUCLID", "KETER"];
 	public static var difficultyLength:Int = difficultyArray.length;
 
 	public static function difficultyFromNumber(number:Int):String
@@ -104,5 +104,25 @@ class CoolUtil
 			dumbArray.push(i);
 		}
 		return dumbArray;
+	}
+
+	public static function toStringWithFixedDecimalPlaces(val:Float, dp:Int):String
+	{
+		var result:String = Std.string(val);
+		var ptIndex:Int = result.indexOf('.');
+		if(ptIndex == -1) //no decimal place
+		{
+			result + '.';
+			for(i in 0...dp)
+				result += '0';
+		}
+		else if(result.length - 1 - ptIndex > dp)
+			result = result.substr(0,ptIndex+1+dp);
+		else if (result.length - 1 - ptIndex < dp)
+		{
+			for (i in 0...(dp - (result.length - 1 - ptIndex)))
+				result += '0';
+		}
+		return result;
 	}
 }

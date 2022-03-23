@@ -62,6 +62,8 @@ class PlayState extends MusicBeatState
 	public static var vocals:FlxSound;
 
 	public static var campaignScore:Int = 0;
+	public static var campaignAccuracy:Array<Float> = [];
+	public static var campaignMisses:Int = 0;
 
 	public static var dadOpponent:Character;
 	public static var gf:Character;
@@ -1551,6 +1553,8 @@ class PlayState extends MusicBeatState
 		{
 			// set the campaign's score higher
 			campaignScore += songScore;
+			campaignAccuracy.push(Timings.getAccuracy());
+			campaignMisses += misses;
 
 			// remove a song from the story playlist
 			storyPlaylist.remove(storyPlaylist[0]);
@@ -1570,8 +1574,15 @@ class PlayState extends MusicBeatState
 
 				// save the week's score if the score is valid
 				if (SONG.validScore)
-					Highscore.saveWeekScore(storyWeek, campaignScore, Timings.getAccuracy(), misses, storyDifficulty);
-
+				{
+					var avgAccuracy:Float = 0;
+					for(i in campaignAccuracy)
+					{
+						avgAccuracy += i;
+					}
+					avgAccuracy /= campaignAccuracy.length;
+					Highscore.saveWeekScore(storyWeek, campaignScore, avgAccuracy, campaignMisses, storyDifficulty);
+				}
 				// flush the save
 				FlxG.save.flush();
 			}

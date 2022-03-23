@@ -78,7 +78,6 @@ class Character extends FNFSprite
 				animation.addByPrefix('scared', 'GF FEAR', 24);
 
 				playAnim('danceRight');
-
 			case 'gf-christmas':
 				tex = Paths.getSparrowAtlas('characters/gfChristmas');
 				frames = tex;
@@ -93,6 +92,15 @@ class Character extends FNFSprite
 				animation.addByIndices('hairBlow', "GF Dancing Beat Hair blowing", [0, 1, 2, 3], "", 24);
 				animation.addByIndices('hairFall', "GF Dancing Beat Hair Landing", [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], "", 24, false);
 				animation.addByPrefix('scared', 'GF FEAR', 24);
+
+				playAnim('danceRight');
+			case 'gf-mountains':
+				tex = Paths.getSparrowAtlas('characters/gfMountains');
+				frames = tex;
+				animation.addByPrefix('cheer', 'GF Cheer', 24, false);
+				animation.addByIndices('sad', 'gf sad', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], "", 24, false);
+				animation.addByIndices('danceLeft', 'GF Dancing Beat', [30, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14], "", 24, false);
+				animation.addByIndices('danceRight', 'GF Dancing Beat', [15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29], "", 24, false);
 
 				playAnim('danceRight');
 
@@ -232,6 +240,16 @@ class Character extends FNFSprite
 				animation.addByPrefix('singDOWNmiss', 'Pico Down Note MISS MTF', 24);
 
 				playAnim('idle');
+				flipX = true;
+			case 'pico-dead':
+				frames = Paths.getSparrowAtlas('characters/Pico_Death');
+
+				animation.addByPrefix('firstDeath', "Pico death0", 24, false);
+				animation.addByPrefix('deathLoop', "Pico death loop", 24, true);
+				animation.addByPrefix('deathConfirm', "Pico death confirm", 24, false);
+
+				playAnim('firstDeath');
+
 				flipX = true;
 			case 'bf':
 				frames = Paths.getSparrowAtlas('characters/BOYFRIEND');
@@ -551,23 +569,26 @@ class Character extends FNFSprite
 			playAnim('danceLeft');
 		
 		var idleWidth = frameWidth;
-		playAnim('singUP');
-		animOffsets['singUP'].x = (frameWidth - idleWidth) - animOffsets['singUP'].x;
-		playAnim('singDOWN');
-		animOffsets['singDOWN'].x = (frameWidth - idleWidth) - animOffsets['singDOWN'].x;
-		playAnim('singLEFT');
-		animOffsets['singLEFT'].x = (frameWidth - idleWidth) - animOffsets['singLEFT'].x;
-		playAnim('singRIGHT');
-		animOffsets['singRIGHT'].x = (frameWidth - idleWidth) - animOffsets['singRIGHT'].x;
+		if (animation.getByName('singRIGHT') != null)
+		{
+			playAnim('singUP');
+			animOffsets['singUP'].x = (frameWidth - idleWidth) - animOffsets['singUP'].x;
+			playAnim('singDOWN');
+			animOffsets['singDOWN'].x = (frameWidth - idleWidth) - animOffsets['singDOWN'].x;
+			playAnim('singLEFT');
+			animOffsets['singLEFT'].x = (frameWidth - idleWidth) - animOffsets['singLEFT'].x;
+			playAnim('singRIGHT');
+			animOffsets['singRIGHT'].x = (frameWidth - idleWidth) - animOffsets['singRIGHT'].x;
 
-		// swap left and right sprites
-		var oldRightOffset = animOffsets['singRIGHT'];
-		animOffsets['singRIGHT'] = animOffsets['singLEFT'];
-		animOffsets['singLEFT'] = oldRightOffset;
-		var oldRight = animation.getByName('singRIGHT').frames;
-		animation.getByName('singRIGHT').frames = animation.getByName('singLEFT').frames;
-		animation.getByName('singLEFT').frames = oldRight;
-		
+			// swap left and right sprites
+			var oldRightOffset = animOffsets['singRIGHT'];
+			animOffsets['singRIGHT'] = animOffsets['singLEFT'];
+			animOffsets['singLEFT'] = oldRightOffset;
+			var oldRight = animation.getByName('singRIGHT').frames;
+			animation.getByName('singRIGHT').frames = animation.getByName('singLEFT').frames;
+			animation.getByName('singLEFT').frames = oldRight;
+		}
+
 		if (animation.getByName('singRIGHTmiss') != null)
 		{
 			playAnim('singUPmiss');
@@ -643,6 +664,7 @@ class Character extends FNFSprite
 					else
 						playAnim('danceLeft', forced);
 				}
+			case null:
 			default:
 				// Left/right dancing, think Skid & Pump
 				if (animation.getByName('danceLeft') != null && animation.getByName('danceRight') != null) {

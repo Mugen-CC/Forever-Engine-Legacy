@@ -214,13 +214,6 @@ class FreeplayState extends MusicBeatState
 		var lerpVal = Main.framerateAdjust(0.1);
 		lerpScore = ScoreMetaData.lerp(lerpScore, intendedScore, lerpVal);
 
-		if (Math.abs(lerpScore.score - intendedScore.score) <= 10)
-			lerpScore.score = intendedScore.score;
-		if (Math.abs(lerpScore.accuracy - intendedScore.accuracy) <= 0.01)
-			lerpScore.accuracy = intendedScore.accuracy;
-		if (Math.abs(lerpScore.comboBreaks - intendedScore.comboBreaks) <= 1)
-			lerpScore.comboBreaks = intendedScore.comboBreaks;
-
 		var upP = controls.UI_UP_P;
 		var downP = controls.UI_DOWN_P;
 		var accepted = controls.ACCEPT;
@@ -266,14 +259,7 @@ class FreeplayState extends MusicBeatState
 		scoreText.text = 'HIGH SCORE:${lerpScore.score}';
 		var accuracyString:String = Std.string((Std.int(lerpScore.accuracy * 100)) / 100);
 		if (lerpScore.accuracy != intendedScore.accuracy)
-		{
-			var ptIndex:Int = accuracyString.indexOf('.');
-			if(ptIndex == -1) accuracyString += '.00';
-			else{
-				var remainingZeroes:Int = 2-(accuracyString.length-ptIndex-1);
-				for(i in 0...remainingZeroes) accuracyString += '0';
-			}
-		}
+			accuracyString = CoolUtil.toStringWithFixedDecimalPlaces(lerpScore.accuracy, 2);
 		accuracyText.text = 'BEST ACCURACY:$accuracyString%';
 		comboBreakText.text = "COMBO BREAKS:" + (intendedScore.comboBreaks == -1 ? 'N/A' : Std.string(lerpScore.comboBreaks));
 		var maxWidth = Math.max(Math.max(scoreText.width, accuracyText.width), comboBreakText.width);

@@ -28,12 +28,6 @@ class StoryMenuState extends MusicBeatState
 
 	var weekCharacters:Array<Dynamic> = [
 		['', 'bf', 'gf'],
-		['dad', 'bf', 'gf'],
-		['spooky', 'bf', 'gf'],
-		['pico', 'bf', 'gf'],
-		['mom', 'bf', 'gf'],
-		['parents-christmas', 'bf', 'gf'],
-		['senpai', 'bf', 'gf']
 	];
 
 	var txtWeekTitle:FlxText;
@@ -81,7 +75,7 @@ class StoryMenuState extends MusicBeatState
 		rankText.size = scoreText.size;
 		rankText.screenCenter(X);
 
-		var ui_tex = Paths.getSparrowAtlas('menus/base/storymenu/campaign_menu_UI_assets');
+		var ui_tex:FlxAtlasFrames = Paths.getSparrowAtlas('menus/base/storymenu/campaign_menu_UI_assets');
 		var yellowBG:FlxSprite = new FlxSprite(0, 56).makeGraphic(FlxG.width, 400, 0xFFF9CF51);
 
 		grpWeekText = new FlxTypedGroup<MenuItem>();
@@ -159,16 +153,17 @@ class StoryMenuState extends MusicBeatState
 		leftArrow.animation.play('idle');
 		difficultySelectors.add(leftArrow);
 
-		sprDifficulty = new FlxSprite(leftArrow.x + 130, leftArrow.y);
+		sprDifficulty = new FlxSprite(leftArrow.x + leftArrow.frameWidth+12, leftArrow.y);
 		sprDifficulty.frames = ui_tex;
 		for (i in CoolUtil.difficultyArray)
 			sprDifficulty.animation.addByPrefix(i.toLowerCase(), i.toUpperCase());
-		sprDifficulty.animation.play('easy');
+		sprDifficulty.animation.play('keter');
+		sprDifficulty.antialiasing = true;
 		changeDifficulty();
 
 		difficultySelectors.add(sprDifficulty);
 
-		rightArrow = new FlxSprite(sprDifficulty.x + sprDifficulty.width + 50, leftArrow.y);
+		rightArrow = new FlxSprite(sprDifficulty.x + sprDifficulty.width+12, leftArrow.y);
 		rightArrow.frames = ui_tex;
 		rightArrow.animation.addByPrefix('idle', 'arrow right');
 		rightArrow.animation.addByPrefix('press', "arrow push right", 24, false);
@@ -199,8 +194,11 @@ class StoryMenuState extends MusicBeatState
 		// scoreText.setFormat('VCR OSD Mono', 32);
 		var lerpVal = Main.framerateAdjust(0.5);
 		lerpScore = ScoreMetaData.lerp(lerpScore, intendedScore, lerpVal);
+		var accuracyString:String = Std.string((Std.int(lerpScore.accuracy * 100)) / 100);
+		if (lerpScore.accuracy != intendedScore.accuracy)
+			accuracyString = CoolUtil.toStringWithFixedDecimalPlaces(lerpScore.accuracy, 2);
 
-		scoreText.text = "WEEK SCORE:" + lerpScore;
+		scoreText.text = 'WEEK SCORE:${lerpScore.score} ($accuracyString%)(${intendedScore.comboBreaks == -1 ? 'N/A' : Std.string(lerpScore.comboBreaks)} misses)';
 
 		txtWeekTitle.text = Main.gameWeeks[curWeek][3].toUpperCase();
 		txtWeekTitle.x = FlxG.width - (txtWeekTitle.width + 10);
@@ -301,7 +299,7 @@ class StoryMenuState extends MusicBeatState
 
 		var difficultyString = CoolUtil.difficultyFromNumber(curDifficulty).toLowerCase();
 		sprDifficulty.animation.play(difficultyString);
-		switch (curDifficulty)
+		/*switch (curDifficulty)
 		{
 			case 0:
 				sprDifficulty.offset.x = 20;
@@ -309,7 +307,8 @@ class StoryMenuState extends MusicBeatState
 				sprDifficulty.offset.x = 70;
 			case 2:
 				sprDifficulty.offset.x = 20;
-		}
+		}*/
+		sprDifficulty.offset.x = -(sprDifficulty.width - sprDifficulty.frameWidth)/2;
 
 		sprDifficulty.alpha = 0;
 
@@ -317,7 +316,7 @@ class StoryMenuState extends MusicBeatState
 		sprDifficulty.y = leftArrow.y - 15;
 		intendedScore = Highscore.getWeekScore(curWeek, curDifficulty);
 
-		FlxTween.tween(sprDifficulty, {y: leftArrow.y + 15, alpha: 1}, 0.07);
+		FlxTween.tween(sprDifficulty, {y: leftArrow.y + 7, alpha: 1}, 0.07);
 	}
 
 	var lerpScore:ScoreMetaData = new ScoreMetaData();

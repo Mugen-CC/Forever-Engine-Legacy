@@ -158,9 +158,12 @@ class TitleState extends MusicBeatState
 		if (Assets.exists(Paths.txt('introText')))
 		{
 			var fullText:String = Assets.getText(Paths.txt('introText'));
-			var firstArray:Array<String> = fullText.split('\n');
+			var firstArray:Array<String> = fullText.split('\r\n');
 			for (i in firstArray)
+			{
 				if(!i.startsWith('//')) swagGoodArray.push(i.split('--'));
+			}
+				
 		}
 
 		return swagGoodArray;

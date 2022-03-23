@@ -56,8 +56,8 @@ class StageMountains extends Stage
 
 	override public function returnGFtype(song:String = "")
 	{
-		if(song == "Funny Scream") return null;
-		return 'gf';
+		if(song == "Funny-Scream") return null;
+		return 'gf-mountains';
 	}
 
 	override public function repositionPlayers(boyfriend:Character, dad:Character, gf:Character):Void

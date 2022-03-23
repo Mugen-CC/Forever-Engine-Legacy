@@ -16,8 +16,14 @@ class ScoreMetaData
 	{
 		var resultScore:ScoreMetaData = new ScoreMetaData();
 		resultScore.score = Math.floor(FlxMath.lerp(lerpScore.score, intendedScore.score, lerpVal));
+		if(resultScore.score != intendedScore.score && resultScore.score == lerpScore.score)
+			resultScore.score += FlxMath.signOf(intendedScore.score - resultScore.score);
 		resultScore.accuracy = FlxMath.lerp(lerpScore.accuracy, intendedScore.accuracy, lerpVal);
-		resultScore.comboBreaks = Math.floor(FlxMath.lerp(lerpScore.comboBreaks, intendedScore.comboBreaks, lerpVal));
+		if (Math.abs(intendedScore.accuracy - resultScore.accuracy)<0.01)
+			resultScore.accuracy = intendedScore.accuracy;
+		resultScore.comboBreaks = Math.ceil(FlxMath.lerp(lerpScore.comboBreaks, intendedScore.comboBreaks, lerpVal));
+		if (resultScore.comboBreaks != intendedScore.comboBreaks && resultScore.comboBreaks == lerpScore.comboBreaks)
+			resultScore.comboBreaks += FlxMath.signOf(intendedScore.comboBreaks - resultScore.comboBreaks);
 
 		return resultScore;
 	}
