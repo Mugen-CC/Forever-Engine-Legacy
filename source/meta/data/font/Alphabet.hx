@@ -325,7 +325,10 @@ class AlphaCharacter extends FlxSprite
 
 	public static var symbols:String = "|~#$%()*+-:;<=>@[]^_.,'!?";
 
-	public static var boldSymbols:String = "-:|'*.?●";
+	public static var boldSymbols:String = "-:|'*.?●🏳️‍🌈🚬";
+
+	static var gayFlagCharCode = 65039;
+	static var fagCharCode = 8205;
 
 	public var row:Int = 0;
 
@@ -361,8 +364,19 @@ class AlphaCharacter extends FlxSprite
 		}
 		else if (AlphaCharacter.boldSymbols.indexOf(character) != -1)
 		{
-			animation.addByPrefix(character, character + " bold", 24);
-			animation.play(character);
+			var charcode:Int = character.charCodeAt(0);
+			switch(charcode)
+			{
+				case 65039:
+					animation.addByPrefix("gay", "gay", 24);
+					animation.play("gay");
+				case 8205:
+					animation.addByPrefix("fag", "faggot", 24);
+					animation.play("fag");
+				default:
+					animation.addByPrefix(character, character + " bold", 24);
+					animation.play(character);
+			}
 			scale.set(textSize, textSize);
 			switch(character)
 			{
@@ -372,6 +386,8 @@ class AlphaCharacter extends FlxSprite
 					y += 10;
 				case '.':
 					y += 40;
+				case '|':
+					y -= 10;
 			}
 			updateHitbox();
 		}
