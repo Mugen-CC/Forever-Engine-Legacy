@@ -250,7 +250,7 @@ class PlayState extends MusicBeatState
 			assetModifier = 'pixel';
 
 		// add characters
-		if (stageBuild.returnGFtype() != null) add(gf);
+		if (stageBuild.returnGFtype(SONG.song) != null) add(gf);
 
 		// add limo cus dumb layering
 		if (curStage == 'highway')
