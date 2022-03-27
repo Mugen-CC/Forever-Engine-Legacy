@@ -11,12 +11,14 @@ import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.tweens.misc.ColorTween;
 import flixel.util.FlxColor;
+import gameObjects.userInterface.FCMedal;
 import gameObjects.userInterface.HealthIcon;
 import haxe.Exception;
 import lime.utils.Assets;
 import meta.MusicBeat.MusicBeatState;
 import meta.data.*;
 import meta.data.Highscore.ScoreMetaData;
+import meta.data.Highscore;
 import meta.data.Song.SwagSong;
 import meta.data.dependency.Discord;
 import meta.data.font.Alphabet;
@@ -54,6 +56,7 @@ class FreeplayState extends MusicBeatState
 	private var curPlaying:Bool = false;
 
 	private var iconArray:Array<HealthIcon> = [];
+	private var medalArray:Map<String,FCMedal> = [];
 
 	private var mainColor = FlxColor.WHITE;
 	private var bg:FlxSprite;
@@ -127,10 +130,19 @@ class FreeplayState extends MusicBeatState
 
 			var icon:HealthIcon = new HealthIcon(songs[i].songCharacter);
 			icon.sprTracker = songText;
-
 			// using a FlxGroup is too much fuss!
 			iconArray.push(icon);
 			add(icon);
+
+			if (Highscore.getFC(songs[i].songName) != -1)
+			{
+				var medal:FCMedal = new FCMedal(songs[i].songName);
+				medal.sprTracker = songText;
+				// using a FlxGroup is too much fuss!
+				medalArray.set(songs[i].songName,medal);
+				add(medal);
+			}
+			
 
 			// songText.x += 40;
 			// DONT PUT X IN THE FIRST PARAMETER OF new ALPHABET() !!
@@ -327,13 +339,18 @@ class FreeplayState extends MusicBeatState
 		// song switching stuffs
 
 		var bullShit:Int = 0;
-
-		for (i in 0...iconArray.length)
+		for (icon in iconArray)
 		{
-			iconArray[i].alpha = 0.6;
+			icon.alpha = 0.6;
+		}
+		for (medal in medalArray)
+		{
+			medal.alpha = 0.6;
 		}
 
 		iconArray[selectedSong].alpha = 1;
+		if (medalArray.exists(songs[selectedSong].songName))
+			medalArray.get(songs[selectedSong].songName).alpha = 1;
 
 		for (item in grpSongs.members)
 		{

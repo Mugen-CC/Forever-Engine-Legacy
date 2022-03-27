@@ -32,14 +32,17 @@ class Highscore
 {
 	#if (haxe >= "4.0.0")
 	public static var songScores:Map<String, ScoreMetaData> = new Map();
+	public static var songFCs:Map<String, Int> = new Map();
 	#else
 	public static var songScores:Map<String, ScoreMetaData> = new Map<String, ScoreMetaData>();
+	public static var songFCs:Map<String, Int> = new Map<String, Int>();
 	#end
 
 	public static function saveScore(song:String, score:Int = 0, accuracy:Float = 0, combobreaks:Int = -1, ?diff:Int = 0):Void
 	{
 		var daSong:String = formatSong(song, diff);
 		updateScore(daSong, score, accuracy, combobreaks);
+		updateFC(song,combobreaks,diff);
 	}
 
 	public static function saveWeekScore(week:Int = 1, score:Int = 0, accuracy:Float = 0, combobreaks:Int = -1, ?diff:Int = 0):Void
@@ -74,6 +77,20 @@ class Highscore
 		FlxG.save.flush();
 	}
 
+	/**
+		DO NOT FORMAT SONG before use
+	**/
+	static function updateFC(song:String, combobreaks:Int, diff:Int):Void
+	{
+		if(combobreaks != 0) return;
+		if (!songFCs.exists(song) || songFCs.get(song) < diff)
+		{
+			songFCs.set(song, diff);
+		}
+		FlxG.save.data.songFCs = songFCs;
+		FlxG.save.flush();
+	}
+
 	public static function formatSong(song:String, diff:Int):String
 	{
 		var daSong:String = song;
@@ -84,13 +101,20 @@ class Highscore
 
 		return daSong;
 	}
-
 	public static function getScore(song:String, diff:Int):ScoreMetaData
 	{
 		if (!songScores.exists(formatSong(song, diff)))
 			updateScore(formatSong(song, diff));
 
 		return songScores.get(formatSong(song, diff));
+	}
+
+	public static function getFC(song:String):Int
+	{
+		if (!songFCs.exists(song))
+			songFCs.set(song,-1);
+
+		return songFCs.get(song);
 	}
 
 	public static function getWeekScore(week:Int, diff:Int):ScoreMetaData
@@ -107,11 +131,16 @@ class Highscore
 		{
 			songScores = FlxG.save.data.songScores;
 		}
+		if (FlxG.save.data.songFCs != null)
+		{
+			songScores = FlxG.save.data.songFCs;
+		}
 	}
 
 	public static function clear():Void
 	{
 		FlxG.save.data.songScores = new Map<String, ScoreMetaData>();
+		FlxG.save.data.songFCs = new Map<String, Int>();
 		FlxG.save.flush();
 	}
 }
