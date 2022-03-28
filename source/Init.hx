@@ -121,8 +121,15 @@ class Init extends FlxState
 		],
 		"Clip Style" => ['stepmania', Selector, "Chooses a style for hold note clippings; StepMania: Holds under Receptors; FNF: Holds over receptors", NOT_FORCED, 
 			['StepMania', 'FNF']],
-		"UI Skin" => ['default', Selector, 'Choose a UI Skin for judgements, combo, etc.', NOT_FORCED, ''],
+		"UI Skin" => [
+			'default',
+			Selector,
+			'Choose a UI Skin for judgements, combo, etc.',
+			NOT_FORCED,
+			''
+		],
 		"Note Skin" => ['default', Selector, 'Choose a note skin.', NOT_FORCED, ''],
+		"Medal Skin" => ['Default', Selector, 'Choose a medal skin.', NOT_FORCED, ['Default','Newgrounds','Foundation']],
 		"Framerate Cap" => [120, Selector, 'Define your maximum FPS.', NOT_FORCED, ['']],
 		"Opaque Arrows" => [false, Checkmark, "Makes the arrows at the top of the screen opaque again.", NOT_FORCED],
 		"Opaque Holds" => [false, Checkmark, "Huh, why isnt the trail cut off?", NOT_FORCED],
@@ -175,8 +182,8 @@ class Init extends FlxState
 		'PAUSE' => [[FlxKey.ENTER, P], 6],
 		'RESET' => [[R, null], 13],
 		'UI_UP' => [[FlxKey.UP, W], 8],
-		'UI_DOWN' => [[FlxKey.DOWN, S], 9],
-		'UI_LEFT' => [[FlxKey.LEFT, A], 10],
+		'UI_LEFT' => [[FlxKey.LEFT, A], 9],
+		'UI_DOWN' => [[FlxKey.DOWN, S], 10],
 		'UI_RIGHT' => [[FlxKey.RIGHT, D], 11],
 	];
 
@@ -333,5 +340,23 @@ class Init extends FlxState
 
 		FlxG.game.setFilters(filters);
 		// */
+	}
+}
+
+class SettingsMetaData
+{
+	public var defaultValue:Dynamic;
+	public var settingType:SettingTypes;
+	public var description:String;
+	public var forcedSetting:String;
+	public var options:Array<String>;
+
+	public function new(defaultval:Dynamic, type:SettingTypes, desc:String, force:String, option:Array<String>)
+	{
+		defaultValue = defaultval;
+		settingType = type;
+		description = desc;
+		forcedSetting = force;
+		options = option;
 	}
 }
