@@ -10,7 +10,11 @@ class ScoreMetaData
 	public var score:Int = 0;
 	public var accuracy:Float = 0;
 	public var comboBreaks:Int = -1;
-	public function new(){}
+	public function new(sco:Int = 0, acc:Float = 0, misses:Int = -1){
+		score = sco;
+		accuracy = acc;
+		comboBreaks = misses;
+	}
 
 	public static function lerp(lerpScore:ScoreMetaData, intendedScore:ScoreMetaData, lerpVal:Float)
 	{
@@ -26,6 +30,11 @@ class ScoreMetaData
 			resultScore.comboBreaks += FlxMath.signOf(intendedScore.comboBreaks - resultScore.comboBreaks);
 
 		return resultScore;
+	}
+
+	public function toString():String
+	{
+		return 'ScoreMetaData{score:$score, accuracy:$accuracy, comboBreaks:$comboBreaks}';
 	}
 }
 class Highscore
@@ -43,6 +52,18 @@ class Highscore
 		var daSong:String = formatSong(song, diff);
 		updateScore(daSong, score, accuracy, combobreaks);
 		updateFC(song,combobreaks,diff);
+	}
+
+	//Strictly for DEBUG purposes only
+	public static function loadFakeScore(song:String, score:Int = 0, accuracy:Float = 0, combobreaks:Int = -1, ?diff:Int = 0):Void
+	{
+		var daSong:String = formatSong(song, diff);
+		songScores.set(daSong, new ScoreMetaData(score,accuracy,combobreaks));
+		if(combobreaks == 0)
+			songFCs.set(song,diff);
+		FlxG.save.data.songScores = songScores;
+		FlxG.save.data.songFCs = songFCs;
+		FlxG.save.flush();
 	}
 
 	public static function saveWeekScore(week:Int = 1, score:Int = 0, accuracy:Float = 0, combobreaks:Int = -1, ?diff:Int = 0):Void
@@ -106,6 +127,7 @@ class Highscore
 		if (!songScores.exists(formatSong(song, diff)))
 			updateScore(formatSong(song, diff));
 
+		//trace(formatSong(song, diff) + ' ' + songScores.get(formatSong(song, diff).toString()));
 		return songScores.get(formatSong(song, diff));
 	}
 
@@ -133,7 +155,7 @@ class Highscore
 		}
 		if (FlxG.save.data.songFCs != null)
 		{
-			songScores = FlxG.save.data.songFCs;
+			songFCs = FlxG.save.data.songFCs;
 		}
 	}
 

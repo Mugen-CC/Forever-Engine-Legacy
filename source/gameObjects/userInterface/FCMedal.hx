@@ -4,6 +4,7 @@ import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.graphics.FlxGraphic;
 import flixel.util.FlxColor;
+import haxe.Exception;
 import meta.data.Highscore;
 import sys.FileSystem;
 
@@ -25,15 +26,28 @@ class FCMedal extends FlxSprite
 	public function updateMedal(song:String)
 	{
 		antialiasing = true;
-		var iconGraphic:FlxGraphic = Paths.image('UI/forever/base/fcmedals.png');
+		var iconGraphic:FlxGraphic = Paths.image('UI/forever/base/fcmedals');
 		loadGraphic(iconGraphic, true, 100,100);
 
 		initialWidth = width;
 		initialHeight = height;
 
-		animation.add('medal', [0, 1], 0, false);
+		animation.add('medal', [0, 1,2,3,4,5,6,7,8], 0, false);
 		animation.play('medal');
-		animation.frameIndex = Highscore.songFCs.get(song);
+
+		var medalSkin:Int;
+		switch (Init.trueSettings.get('Medal Skin'))
+		{
+			case 'Default':
+				medalSkin = 0;
+			case 'Newgrounds':
+				medalSkin = 1;
+			case 'Foundation':
+				medalSkin = 2;
+			default:
+				throw new Exception('Unknown medal skin "${Init.trueSettings.get('Medal Skin')}"');
+		}
+		animation.frameIndex = 3*medalSkin + Highscore.getFC(song);
 		scrollFactor.set();
 	}
 
@@ -42,6 +56,6 @@ class FCMedal extends FlxSprite
 		super.update(elapsed);
 
 		if (sprTracker != null)
-			setPosition(sprTracker.x - 100, sprTracker.y);
+			setPosition(sprTracker.x + sprTracker.width + 10, sprTracker.y + 45);
 	}
 }

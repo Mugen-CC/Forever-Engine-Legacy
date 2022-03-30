@@ -26,10 +26,6 @@ class StoryMenuState extends MusicBeatState
 
 	public static var weekUnlocked:Array<Bool> = [true, true, true, true, true, true, true];
 
-	var weekCharacters:Array<Dynamic> = [
-		['', 'bf', 'gf'],
-	];
-
 	var txtWeekTitle:FlxText;
 
 	var curWeek:Int = 0;

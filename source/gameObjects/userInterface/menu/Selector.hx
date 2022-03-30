@@ -21,7 +21,7 @@ class Selector extends FlxTypedSpriteGroup<FlxSprite>
 	public var fpsCap:Bool = false;
 	public var darkBG:Bool = false;
 
-	public function new(x:Float = 0, y:Float = 0, word:String, options:Array<String>, fpsCap:Bool = false, darkBG:Bool = false)
+	public function new(x:Float = 0, y:Float = 0, word:String, alphabetLength:Float, options:Array<String>, fpsCap:Bool = false, darkBG:Bool = false)
 	{
 		// call back the function
 		super(x, y);
@@ -39,14 +39,14 @@ class Selector extends FlxTypedSpriteGroup<FlxSprite>
 
 		#if html5
 		// lol heres how we fuck with everyone
-		var lock = new FlxSprite(shiftX + ((word.length) * 50) + (shiftX / 4) + ((fpsCap) ? 20 : 0), shiftY);
+		var lock = new FlxSprite(shiftX + (leftSelector.frameWidth + alphabetLength) + (shiftX / 4) + ((fpsCap) ? 20 : 0), shiftY);
 		lock.frames = Paths.getSparrowAtlas('menus/base/storymenu/campaign_menu_UI_assets');
 		lock.animation.addByPrefix('lock', 'lock', 24, false);
 		lock.animation.play('lock');
 		add(lock);
 		#else
 		leftSelector = createSelector(shiftX, shiftY, word, 'left');
-		rightSelector = createSelector(shiftX + ((word.length) * 50) + (shiftX / 4) + ((fpsCap) ? 20 : 0), shiftY, word, 'right');
+		rightSelector = createSelector(shiftX + (leftSelector.frameWidth + alphabetLength) + (shiftX / 4) + ((fpsCap) ? 20 : 0), shiftY, word, 'right');
 
 		add(leftSelector);
 		add(rightSelector);
@@ -56,10 +56,10 @@ class Selector extends FlxTypedSpriteGroup<FlxSprite>
 		if (fpsCap || darkBG)
 		{
 			chosenOptionString = Std.string(Init.trueSettings.get(word));
-			optionChosen = new Alphabet(FlxG.width / 2 + 200, shiftY + 20, chosenOptionString, false, false);
+			optionChosen = new Alphabet(rightSelector.x + rightSelector.frameWidth + (shiftX / 8)/*FlxG.width / 2 + 200*/, shiftY + 20, chosenOptionString, false, false);
 		}
 		else
-			optionChosen = new Alphabet(FlxG.width / 2, shiftY + 20, chosenOptionString, true, false);
+			optionChosen = new Alphabet(rightSelector.x +  rightSelector.frameWidth + (shiftX / 8)/*FlxG.width / 2*/, shiftY + 10, chosenOptionString, true, false);
 
 		add(optionChosen);
 	}

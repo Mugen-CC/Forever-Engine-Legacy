@@ -180,11 +180,11 @@ class Init extends FlxState
 		'ACCEPT' => [[FlxKey.SPACE, Z, FlxKey.ENTER], 4],
 		'BACK' => [[FlxKey.BACKSPACE, X, FlxKey.ESCAPE], 5],
 		'PAUSE' => [[FlxKey.ENTER, P], 6],
-		'RESET' => [[R, null], 13],
 		'UI_UP' => [[FlxKey.UP, W], 8],
 		'UI_LEFT' => [[FlxKey.LEFT, A], 9],
 		'UI_DOWN' => [[FlxKey.DOWN, S], 10],
 		'UI_RIGHT' => [[FlxKey.RIGHT, D], 11],
+		'RESET' => [[R, null], 13],
 	];
 
 	public static var filters:Array<BitmapFilter> = []; // the filters the game has active
@@ -223,6 +223,7 @@ class Init extends FlxState
 	{
 		FlxG.save.bind('foreverengine-options');
 		Highscore.load();
+		//Highscore.loadFakeScore('Scopophobia', 312500, 97.54, 0, 2);
 
 		loadSettings();
 		loadControls();
@@ -343,20 +344,3 @@ class Init extends FlxState
 	}
 }
 
-class SettingsMetaData
-{
-	public var defaultValue:Dynamic;
-	public var settingType:SettingTypes;
-	public var description:String;
-	public var forcedSetting:String;
-	public var options:Array<String>;
-
-	public function new(defaultval:Dynamic, type:SettingTypes, desc:String, force:String, option:Array<String>)
-	{
-		defaultValue = defaultval;
-		settingType = type;
-		description = desc;
-		forcedSetting = force;
-		options = option;
-	}
-}

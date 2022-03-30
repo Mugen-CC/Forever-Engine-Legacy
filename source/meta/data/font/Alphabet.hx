@@ -414,7 +414,7 @@ class AlphaCharacter extends FlxSprite
 
 	public function createNumber(letter:String):Void
 	{
-		animation.addByPrefix(letter, letter, 24);
+		animation.addByPrefix(letter, letter + " regular", 24);
 		animation.play(letter);
 
 		updateHitbox();

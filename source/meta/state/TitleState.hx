@@ -294,11 +294,11 @@ class TitleState extends MusicBeatState
 		switch (curBeat)
 		{
 			case 1:
-				createCoolText(['special thanks to']);
+				createCoolText(['forever engine by']);
 
 			// credTextShit.visible = true;
 			case 3:
-				addMoreText(['ninjamuffin', 'phantomArcade', 'kawaisprite', 'evilsker']);
+				addMoreText(['yoshubs', 'pixloen', 'gedehari', 'and others...']);
 			// credTextShit.text += '\npresent...';
 			// credTextShit.addText();
 			case 4:
@@ -307,15 +307,15 @@ class TitleState extends MusicBeatState
 			// credTextShit.text = 'In association \nwith';
 			// credTextShit.screenCenter();
 			case 5:
-				createCoolText(['In association', 'with']);
+				createCoolText(['music by']);
 			case 7:
-				addMoreText(['newgrounds']);
-				ngSpr.visible = true;
+				addMoreText(['mpranger','pancho']);
+				//ngSpr.visible = true;
 			// credTextShit.text += '\nNewgrounds';
 
 			case 8:
 				deleteCoolText();
-				ngSpr.visible = false;
+				//ngSpr.visible = false;
 			// credTextShit.visible = false;
 
 			// credTextShit.text = 'Shoutouts Tom Fulp';

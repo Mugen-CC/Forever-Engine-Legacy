@@ -137,7 +137,7 @@ class FreeplayState extends MusicBeatState
 			if (Highscore.getFC(songs[i].songName) != -1)
 			{
 				var medal:FCMedal = new FCMedal(songs[i].songName);
-				medal.sprTracker = songText;
+				medal.sprTracker = icon;
 				// using a FlxGroup is too much fuss!
 				medalArray.set(songs[i].songName,medal);
 				add(medal);

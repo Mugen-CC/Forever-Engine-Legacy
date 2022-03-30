@@ -16,12 +16,23 @@ import meta.data.dependency.FNFSprite;
 import meta.data.font.Alphabet;
 import meta.subState.OptionsSubstate;
 
+class CategoryMetaData
+{
+	public var settings:Array<Dynamic>;
+	public var alphabetGroup:FlxTypedGroup<Alphabet>;
+	public var attachmentMap:Map<Alphabet, Dynamic>;
+
+	public function new(setting:Array<Dynamic>)
+	{
+		settings = setting;
+	}
+}
 /**
 	Options menu rewrite because I'm unhappy with how it was done previously
 **/
 class OptionsMenuState extends MusicBeatState
 {
-	private var categoryMap:Map<String, Dynamic>;
+	private var categoryMap:Map<String, CategoryMetaData>;
 	private var activeSubgroup:FlxTypedGroup<Alphabet>;
 	private var attachments:FlxTypedGroup<FlxBasic>;
 
@@ -49,16 +60,17 @@ class OptionsMenuState extends MusicBeatState
 		Discord.changePresence('OPTIONS MENU', 'Main Menu');
 		#end
 
+		//categoryMap will map a key to [array of settings, Alphabet group, ]
 		categoryMap = [
-			'main' => [
+			'main' => new CategoryMetaData(
 				[
 					['preferences', callNewGroup],
 					['appearance', callNewGroup],
 					['controls', openControlmenu],
 					['exit', exitMenu]
 				]
-			],
-			'preferences' => [
+			),
+			'preferences' => new CategoryMetaData(
 				[
 					['Game Settings', null],
 					['', null],
@@ -75,12 +87,13 @@ class OptionsMenuState extends MusicBeatState
 					['Memory Counter', getFromOption],
 					['Debug Info', getFromOption],
 				]
-			],
-			'appearance' => [
+			),
+			'appearance' => new CategoryMetaData(
 				[
 					['Judgements', null],
 					['', null],
-					["UI Skin", getFromOption],
+					["UI Skin", getFromOption], 
+					["Medal Skin", getFromOption],
 					['Fixed Judgements', getFromOption], 
 					['Simply Judgements', getFromOption],
 					['Counter', getFromOption],
@@ -102,13 +115,13 @@ class OptionsMenuState extends MusicBeatState
 					["Opacity Type", getFromOption],
 					['Reduced Movements', getFromOption],
 				]
-			]
+			)
 		];
 
 		for (category in categoryMap.keys())
 		{
-			categoryMap.get(category)[1] = returnSubgroup(category);
-			categoryMap.get(category)[2] = returnExtrasMap(categoryMap.get(category)[1]);
+			categoryMap.get(category).alphabetGroup = returnSubgroup(category);
+			categoryMap.get(category).attachmentMap = returnExtrasMap(categoryMap.get(category).alphabetGroup);
 		}
 
 		// call the options menu
@@ -152,14 +165,14 @@ class OptionsMenuState extends MusicBeatState
 			remove(activeSubgroup);
 
 		// load subgroup lmfao
-		activeSubgroup = categoryMap.get(subgroupName)[1];
+		activeSubgroup = categoryMap.get(subgroupName).alphabetGroup;
 		add(activeSubgroup);
 
 		// set the category
 		curCategory = subgroupName;
 
 		// add all group attachments afterwards
-		currentAttachmentMap = categoryMap.get(subgroupName)[2];
+		currentAttachmentMap = categoryMap.get(subgroupName).attachmentMap;
 		attachments = new FlxTypedGroup<FlxBasic>();
 		for (setting in activeSubgroup)
 			if (currentAttachmentMap.get(setting) != null)
@@ -202,7 +215,7 @@ class OptionsMenuState extends MusicBeatState
 			activeSubgroup.members[i].xTo = 200 + ((i - curSelection) * 25);
 
 			// check for null members and hardcode the dividers
-			if (categoryMap.get(curCategory)[0][i][1] == null) {
+			if (categoryMap.get(curCategory).settings[i][1] == null) {
 				activeSubgroup.members[i].alpha = 1;
 				activeSubgroup.members[i].xTo += Std.int((FlxG.width / 2) - ((activeSubgroup.members[i].text.length / 2) * 40)) - 200;
 			}
@@ -213,9 +226,9 @@ class OptionsMenuState extends MusicBeatState
 			setAttachmentAlpha(currentAttachmentMap.get(activeSubgroup.members[curSelection]), 1);
 
 		// what's the script of the current selection?
-		for (i in 0...categoryMap.get(curCategory)[0].length)
-			if (categoryMap.get(curCategory)[0][i][0] == activeSubgroup.members[curSelection].text)
-				curSelectedScript = categoryMap.get(curCategory)[0][i][1];
+		for (i in 0...categoryMap.get(curCategory).settings.length)
+			if (categoryMap.get(curCategory).settings[i][0] == activeSubgroup.members[curSelection].text)
+				curSelectedScript = categoryMap.get(curCategory).settings[i][1];
 		// wow thats a dumb check lmao
 
 		// skip line if the selected script is null (indicates line break)
@@ -348,14 +361,14 @@ class OptionsMenuState extends MusicBeatState
 		//
 		var newGroup:FlxTypedGroup<Alphabet> = new FlxTypedGroup<Alphabet>();
 
-		for (i in 0...categoryMap.get(groupName)[0].length)
+		for (i in 0...categoryMap.get(groupName).settings.length)
 		{
-			if (Init.gameSettings.get(categoryMap.get(groupName)[0][i][0]) == null
-				|| Init.gameSettings.get(categoryMap.get(groupName)[0][i][0])[3] != Init.FORCED)
+			if (Init.gameSettings.get(categoryMap.get(groupName).settings[i][0]) == null
+				|| Init.gameSettings.get(categoryMap.get(groupName).settings[i][0])[3] != Init.FORCED)
 			{
-				var thisOption:Alphabet = new Alphabet(0, 0, categoryMap.get(groupName)[0][i][0], true, false);
+				var thisOption:Alphabet = new Alphabet(0, 0, categoryMap.get(groupName).settings[i][0], true, false);
 				thisOption.screenCenter();
-				thisOption.y += (90 * (i - Math.floor(categoryMap.get(groupName)[0].length / 2)));
+				thisOption.y += (90 * (i - Math.floor(categoryMap.get(groupName).settings.length / 2)));
 				thisOption.targetY = i;
 				thisOption.disableX = true;
 				// hardcoded main so it doesnt have scroll
@@ -386,7 +399,7 @@ class OptionsMenuState extends MusicBeatState
 						extrasMap.set(letter, checkmark);
 					case Init.SettingTypes.Selector:
 						// selector
-						var selector:Selector = new Selector(10, letter.y, letter.text, Init.gameSettings.get(letter.text)[4],
+						var selector:Selector = new Selector(10, letter.y, letter.text, letter.width, Init.gameSettings.get(letter.text)[4],
 							(letter.text == 'Framerate Cap') ? true : false, (letter.text == 'Stage Opacity') ? true : false);
 
 						extrasMap.set(letter, selector);
