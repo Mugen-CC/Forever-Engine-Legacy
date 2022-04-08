@@ -1567,7 +1567,9 @@ class PlayState extends MusicBeatState
 
 				// set up transitions
 				transIn = FlxTransitionableState.defaultTransIn;
+				FlxTransitionableState.skipNextTransIn = false;
 				transOut = FlxTransitionableState.defaultTransOut;
+				FlxTransitionableState.skipNextTransOut = false;
 
 				// change to the menu state
 				Main.switchState(this, new StoryMenuState());

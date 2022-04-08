@@ -325,7 +325,7 @@ class AlphaCharacter extends FlxSprite
 
 	public static var symbols:String = "|~#$%()*+-:;<=>@[]^_.,'!?";
 
-	public static var boldSymbols:String = "-:|'*.?●🏳️‍🌈🚬";
+	public static var boldSymbols:String = "-:|'*.?●🏳️‍🌈🚬/";
 
 	static var gayFlagCharCode = 65039;
 	static var fagCharCode = 8205;
@@ -373,6 +373,9 @@ class AlphaCharacter extends FlxSprite
 				case 8205:
 					animation.addByPrefix("fag", "faggot", 24);
 					animation.play("fag");
+				case '/'.code:
+					animation.addByPrefix("/", "forwardslash bold", 24);
+					animation.play("/");
 				default:
 					animation.addByPrefix(character, character + " bold", 24);
 					animation.play(character);

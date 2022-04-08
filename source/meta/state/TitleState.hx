@@ -45,6 +45,7 @@ class TitleState extends MusicBeatState
 	var credTextShit:Alphabet;
 	var textGroup:FlxGroup;
 	var ngSpr:FlxSprite;
+	var djkaktus:FlxSprite;
 
 	var curWacky:Array<String> = [];
 
@@ -85,7 +86,7 @@ class TitleState extends MusicBeatState
 		// bg.updateHitbox();
 		add(bg);
 
-		logoBl = new FlxSprite(-150, -100);
+		logoBl = new FlxSprite(0, 10);
 		logoBl.frames = Paths.getSparrowAtlas('menus/base/title/logoBumpin');
 		logoBl.antialiasing = true;
 		logoBl.animation.addByPrefix('bump', 'logo bumpin', 24);
@@ -141,6 +142,13 @@ class TitleState extends MusicBeatState
 		ngSpr.updateHitbox();
 		ngSpr.screenCenter(X);
 		ngSpr.antialiasing = true;
+
+		djkaktus = new FlxSprite(0, FlxG.height * 0.36).loadGraphic(Paths.image('menus/base/title/djkaktus_article'));
+		add(djkaktus);
+		djkaktus.visible = false;
+		djkaktus.updateHitbox();
+		djkaktus.screenCenter(X);
+		djkaktus.antialiasing = true;
 
 		FlxTween.tween(credTextShit, {y: credTextShit.y + 20}, 2.9, {ease: FlxEase.quadInOut, type: PINGPONG});
 
@@ -332,10 +340,12 @@ class TitleState extends MusicBeatState
 						addMoreText([curWacky[2]]);
 					case 2:
 						addMoreText([curWacky[1]]);
+						if (curWacky[1] == "{words}") djkaktus.visible = true;
 				}
 			// credTextShit.text += '\nlmao';
 			case 12:
 				deleteCoolText();
+				djkaktus.visible = false;
 			// credTextShit.visible = false;
 			// credTextShit.text = "Friday";
 			// credTextShit.screenCenter();
