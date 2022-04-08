@@ -84,6 +84,7 @@ class StoryMenuState extends MusicBeatState
 		grpWeekWideScreen.frames = Paths.getSparrowAtlas('menus/base/storymenu/campaign_menu_UI_characters');
 		grpWeekWideScreen.animation.addByPrefix('shyguy', "shyguywidescreen", 24, true);
 		grpWeekWideScreen.animation.play('shyguy');
+		grpWeekWideScreen.antialiasing = true;
 
 		grpLocks = new FlxTypedGroup<FlxSprite>();
 		add(grpLocks);
@@ -124,6 +125,7 @@ class StoryMenuState extends MusicBeatState
 		leftArrow.animation.addByPrefix('idle', "arrow left");
 		leftArrow.animation.addByPrefix('press', "arrow push left");
 		leftArrow.animation.play('idle');
+		leftArrow.antialiasing = true;
 		difficultySelectors.add(leftArrow);
 
 		sprDifficulty = new FlxSprite(leftArrow.x + leftArrow.frameWidth+12, leftArrow.y);
@@ -141,6 +143,7 @@ class StoryMenuState extends MusicBeatState
 		rightArrow.animation.addByPrefix('idle', 'arrow right');
 		rightArrow.animation.addByPrefix('press', "arrow push right", 24, false);
 		rightArrow.animation.play('idle');
+		rightArrow.antialiasing = true;
 		difficultySelectors.add(rightArrow);
 
 		trace("Line 150");
