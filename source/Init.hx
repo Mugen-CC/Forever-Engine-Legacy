@@ -222,8 +222,8 @@ class Init extends FlxState
 	override public function create():Void
 	{
 		FlxG.save.bind('foreverengine-options');
+		//Highscore.clear();
 		Highscore.load();
-		//Highscore.loadFakeScore('Scopophobia', 312500, 97.54, 0, 2);
 
 		loadSettings();
 		loadControls();

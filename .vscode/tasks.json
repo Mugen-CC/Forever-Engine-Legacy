@@ -22,6 +22,22 @@
 				"kind": "build",
 				"isDefault": true
 			}
+		},
+		{
+			"type": "lime",
+			"command": "release",
+			"targetConfiguration": "Windows / Release",
+			"problemMatcher": [
+				"$haxe-absolute",
+				"$haxe",
+				"$haxe-error",
+				"$haxe-trace"
+			],
+			"label": "lime: test windows -release",
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			}
 		}
 	]
 }
