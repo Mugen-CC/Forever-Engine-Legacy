@@ -5,29 +5,29 @@
 	<SubTexture name="shyguywidescreen0000" x="2" y="2" width="1281" height="401"/>
 	<SubTexture name="shyguywidescreen0001" x="2" y="2" width="1281" height="401"/>
 	<SubTexture name="shyguywidescreen0002" x="1285" y="2" width="1281" height="401"/>
-	<SubTexture name="shyguywidescreen0003" x="1285" y="2" width="1281" height="401"/>
-	<SubTexture name="shyguywidescreen0004" x="2568" y="2" width="1281" height="401"/>
-	<SubTexture name="shyguywidescreen0005" x="2" y="405" width="1281" height="401"/>
-	<SubTexture name="shyguywidescreen0006" x="1285" y="405" width="1281" height="401"/>
-	<SubTexture name="shyguywidescreen0007" x="2568" y="405" width="1281" height="401"/>
-	<SubTexture name="shyguywidescreen0008" x="2" y="808" width="1281" height="401"/>
+	<SubTexture name="shyguywidescreen0003" x="2568" y="2" width="1281" height="401"/>
+	<SubTexture name="shyguywidescreen0004" x="2" y="405" width="1281" height="401"/>
+	<SubTexture name="shyguywidescreen0005" x="1285" y="405" width="1281" height="401"/>
+	<SubTexture name="shyguywidescreen0006" x="2568" y="405" width="1281" height="401"/>
+	<SubTexture name="shyguywidescreen0007" x="2" y="808" width="1281" height="401"/>
+	<SubTexture name="shyguywidescreen0008" x="1285" y="808" width="1281" height="401"/>
 	<SubTexture name="shyguywidescreen0009" x="1285" y="808" width="1281" height="401"/>
-	<SubTexture name="shyguywidescreen0010" x="1285" y="808" width="1281" height="401"/>
-	<SubTexture name="shyguywidescreen0011" x="1285" y="808" width="1281" height="401"/>
-	<SubTexture name="shyguywidescreen0012" x="2568" y="808" width="1281" height="401"/>
-	<SubTexture name="shyguywidescreen0013" x="2568" y="808" width="1281" height="401"/>
-	<SubTexture name="shyguywidescreen0014" x="2" y="1211" width="1281" height="401"/>
-	<SubTexture name="shyguywidescreen0015" x="2" y="1211" width="1281" height="401"/>
-	<SubTexture name="shyguywidescreen0016" x="1285" y="1211" width="1281" height="401"/>
-	<SubTexture name="shyguywidescreen0017" x="1285" y="1211" width="1281" height="401"/>
-	<SubTexture name="shyguywidescreen0018" x="2568" y="1211" width="1281" height="401"/>
-	<SubTexture name="shyguywidescreen0019" x="2" y="1614" width="1281" height="401"/>
-	<SubTexture name="shyguywidescreen0020" x="1285" y="1614" width="1281" height="401"/>
-	<SubTexture name="shyguywidescreen0021" x="2568" y="1614" width="1281" height="401"/>
-	<SubTexture name="shyguywidescreen0022" x="2" y="2017" width="1281" height="401"/>
-	<SubTexture name="shyguywidescreen0023" x="1285" y="2017" width="1281" height="401"/>
-	<SubTexture name="shyguywidescreen0024" x="1285" y="2017" width="1281" height="401"/>
-	<SubTexture name="shyguywidescreen0025" x="1285" y="2017" width="1281" height="401"/>
-	<SubTexture name="shyguywidescreen0026" x="2568" y="2017" width="1281" height="401"/>
-	<SubTexture name="shyguywidescreen0027" x="2568" y="2017" width="1281" height="401"/>
+	<SubTexture name="shyguywidescreen0010" x="2568" y="808" width="1281" height="401"/>
+	<SubTexture name="shyguywidescreen0011" x="2568" y="808" width="1281" height="401"/>
+	<SubTexture name="shyguywidescreen0012" x="2" y="1211" width="1281" height="401"/>
+	<SubTexture name="shyguywidescreen0013" x="2" y="1211" width="1281" height="401"/>
+	<SubTexture name="shyguywidescreen0014" x="1285" y="1211" width="1281" height="401"/>
+	<SubTexture name="shyguywidescreen0015" x="1285" y="1211" width="1281" height="401"/>
+	<SubTexture name="shyguywidescreen0016" x="2568" y="1211" width="1281" height="401"/>
+	<SubTexture name="shyguywidescreen0017" x="2568" y="1211" width="1281" height="401"/>
+	<SubTexture name="shyguywidescreen0018" x="2" y="1614" width="1281" height="401"/>
+	<SubTexture name="shyguywidescreen0019" x="1285" y="1614" width="1281" height="401"/>
+	<SubTexture name="shyguywidescreen0020" x="2568" y="1614" width="1281" height="401"/>
+	<SubTexture name="shyguywidescreen0021" x="2" y="2017" width="1281" height="401"/>
+	<SubTexture name="shyguywidescreen0022" x="1285" y="2017" width="1281" height="401"/>
+	<SubTexture name="shyguywidescreen0023" x="2568" y="2017" width="1281" height="401"/>
+	<SubTexture name="shyguywidescreen0024" x="2568" y="2017" width="1281" height="401"/>
+	<SubTexture name="shyguywidescreen0025" x="2568" y="2017" width="1281" height="401"/>
+	<SubTexture name="shyguywidescreen0026" x="2" y="2420" width="1281" height="401"/>
+	<SubTexture name="shyguywidescreen0027" x="2" y="2420" width="1281" height="401"/>
 </TextureAtlas>
