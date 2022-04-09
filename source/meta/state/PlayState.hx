@@ -156,6 +156,8 @@ class PlayState extends MusicBeatState
 	override public function create()
 	{
 		super.create();
+		FlxTransitionableState.skipNextTransIn = false;
+		FlxTransitionableState.skipNextTransOut = false;
 
 		// reset any values and variables that are static
 		songScore = 0;
