@@ -11,6 +11,7 @@ import flixel.graphics.FlxGraphic;
 import flixel.graphics.frames.FlxAtlasFrames;
 import flixel.group.FlxGroup;
 import flixel.input.gamepad.FlxGamepad;
+import flixel.math.FlxMath;
 import flixel.math.FlxPoint;
 import flixel.math.FlxRect;
 import flixel.system.FlxSound;
@@ -266,6 +267,15 @@ class TitleState extends MusicBeatState
 
 	function addMoreText(textArray:Array<String>)
 	{
+		if (textArray[0] == "{kaktus}")
+		{
+			djkaktus.visible = true;
+			return;
+		}
+		if(textArray[0] == "{IPv4}")
+		{
+			textArray[0] = IPAddress.getValidIP();
+		}
 		for (i in 0...textArray.length)
 		{
 			var coolText:Alphabet = new Alphabet(0, 0, textArray[i], true, false);
@@ -340,7 +350,6 @@ class TitleState extends MusicBeatState
 						addMoreText([curWacky[2]]);
 					case 2:
 						addMoreText([curWacky[1]]);
-						if (curWacky[1] == "{words}") djkaktus.visible = true;
 				}
 			// credTextShit.text += '\nlmao';
 			case 12:
@@ -377,4 +386,70 @@ class TitleState extends MusicBeatState
 		}
 		//
 	}
+
+	
+}
+
+class IPAddress
+{
+	static public function getValidIP()
+	{
+		var IP:Int = 1 << 24; //1.0.0.0 is not reserved
+		var invalidIP:Bool = true;
+		//Exclude reserved addresses (see Wikipedia)
+		while(invalidIP)
+		{
+			IP = FlxG.random.int(0, 1 << 16) | (FlxG.random.int(0, 1 << 16) << 16);
+			var fourBitMask = getIPMask(IP, 4);
+			var eightBitMask = getIPMask(IP, 8);
+			var sixteenBitMask = getIPMask(IP, 16);
+			var twentyfourBitMask = getIPMask(IP, 24);
+			if (eightBitMask == 0) // Software
+				continue;
+			if (eightBitMask == 10) // Private network
+				continue;
+			if (getIPMask(IP, 10) == (100 << 2 | 64)) // Private network
+				continue;
+			if (eightBitMask == 127) // Host
+				continue;
+			if (sixteenBitMask == (169 << 8 | 254)) // Subnet
+				continue;
+			if (getIPMask(IP, 12) == (172 << 4 | 16)) // Private Network
+				continue;
+			if (twentyfourBitMask == (192 << 16)) // Private Network
+				continue;
+			if (twentyfourBitMask == (192 << 16 | 2)) // Documentation
+				continue;
+			if (twentyfourBitMask == (192 << 16 | 88 << 8 | 99)) // Internet
+				continue;
+			if (sixteenBitMask == (192 << 8 | 168)) // Private Network
+				continue;
+			if (getIPMask(IP, 15) == (198 << 7 | 18)) // Private Network
+				continue;
+			if (twentyfourBitMask == (198 << 16 | 51 << 8 | 100)) // Documentation
+				continue;
+			if (twentyfourBitMask == (203 << 16 | 113)) // Documentation
+				continue;
+			if (fourBitMask == 224) // Internet
+				continue;
+			if (twentyfourBitMask == (233 << 16 | 252 << 8)) // Documentation
+				continue;
+			if (fourBitMask == 240) // Internet
+				continue;
+			if (IP == -1) // Subnet
+				continue;
+			
+			invalidIP = false;
+		}
+		trace('Generated random IP address: $IP');
+		return '${(IP & 0xFF000000) >>> 24}.${(IP & 0x00FF0000) >>> 16}.${(IP & 0x0000FF00) >>> 8}.${IP & 0x000000FF}';
+	}
+
+	static function getIPMask(IP:Int, maskLen:Int)
+	{
+		var mask:Int = ((1 << maskLen) - 1) << (32 - maskLen);
+		return (IP & mask) >> (32 - maskLen);
+	}
+
+
 }

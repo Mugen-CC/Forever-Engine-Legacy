@@ -325,7 +325,7 @@ class AlphaCharacter extends FlxSprite
 
 	public static var symbols:String = "|~#$%()*+-:;<=>@[]^_.,'!?";
 
-	public static var boldSymbols:String = "-:|'*.?●🏳️‍🌈🚬/";
+	public static var boldSymbols:String = "-:|'*.?●🏳️‍🌈🚬వ/";
 
 	static var gayFlagCharCode = 65039;
 	static var fagCharCode = 8205;
@@ -389,7 +389,7 @@ class AlphaCharacter extends FlxSprite
 					y += 10;
 				case '.':
 					y += 40;
-				case '|':
+				case '|' | 'వ':
 					y -= 10;
 			}
 			updateHitbox();

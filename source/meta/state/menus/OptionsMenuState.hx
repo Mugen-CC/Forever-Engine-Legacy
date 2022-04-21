@@ -77,6 +77,7 @@ class OptionsMenuState extends MusicBeatState
 					['Downscroll', getFromOption],
 					['Centered Notefield', getFromOption],
 					['Ghost Tapping', getFromOption],
+					['Botplay', getFromOption],
 					['Display Accuracy', getFromOption],
 					['Skip Text', getFromOption],
 					['', null],

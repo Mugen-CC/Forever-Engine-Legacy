@@ -139,6 +139,7 @@ class Init extends FlxState
 			"Enables Ghost Tapping, allowing you to press inputs without missing.",
 			NOT_FORCED
 		],
+		'Botplay' => [false, Checkmark, "Watch the action unfold without breaking a sweat. (will not earn you medals or save the score)"],
 		'Centered Notefield' => [false, Checkmark, "Center the notes, disables the enemy's notes."],
 		"Custom Titlescreen" => [
 			false,
@@ -222,7 +223,7 @@ class Init extends FlxState
 	override public function create():Void
 	{
 		FlxG.save.bind('foreverengine-options');
-		//Highscore.clear();
+		Highscore.clear();
 		Highscore.load();
 
 		loadSettings();

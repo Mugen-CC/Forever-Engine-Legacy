@@ -43,7 +43,7 @@ class Stage extends FlxTypedGroup<FlxBasic>
 	{
 		switch (CoolUtil.spaceToDash(PlayState.SONG.song.toLowerCase()))
 		{
-			case 'spookeez' | 'south' | 'monster':
+			/*case 'spookeez' | 'south' | 'monster':
 				curStage = 'spooky';
 			case 'pico' | 'blammed' | 'philly-nice':
 				curStage = 'philly';
@@ -56,7 +56,7 @@ class Stage extends FlxTypedGroup<FlxBasic>
 			case 'senpai' | 'roses':
 				curStage = 'school';
 			case 'thorns':
-				curStage = 'schoolEvil';
+				curStage = 'schoolEvil';*/
 			case 'funny-scream' | 'scopophobia':
 				curStage = 'mountains';
 			default:

@@ -314,10 +314,12 @@ class PlayState extends MusicBeatState
 
 		//
 		var placement = (FlxG.width / 2);
-		dadStrums = new Strumline(placement - (FlxG.width / 4), this, dadOpponent, false, true, false, 4, Init.trueSettings.get('Downscroll'));
+		var downscroll = Init.trueSettings.get('Downscroll');
+		var botplay = Init.trueSettings.get('Botplay');
+		dadStrums = new Strumline(placement - (FlxG.width / 4), this, dadOpponent, false, true, false, 4, downscroll);
 		dadStrums.visible = !Init.trueSettings.get('Centered Notefield');
-		boyfriendStrums = new Strumline(placement + (!Init.trueSettings.get('Centered Notefield') ? (FlxG.width / 4) : 0), this, boyfriend, true, false, true,
-			4, Init.trueSettings.get('Downscroll'));
+		boyfriendStrums = new Strumline(placement + (!Init.trueSettings.get('Centered Notefield') ? (FlxG.width / 4) : 0), this, boyfriend, !botplay, botplay, true,
+			4, downscroll);
 
 		strumLines.add(dadStrums);
 		strumLines.add(boyfriendStrums);
@@ -614,6 +616,7 @@ class PlayState extends MusicBeatState
 			// boyfriend.playAnim('singLEFT', true);
 			// */
 
+			//Directs the camera between characters singing
 			if (generatedMusic && PlayState.SONG.notes[Std.int(curStep / 16)] != null)
 			{
 				var curSection = Std.int(curStep / 16);
@@ -624,7 +627,7 @@ class PlayState extends MusicBeatState
 						camDisplaceX = 0;
 						camDisplaceY = 0;
 					}
-					lastSection = Std.int(curStep / 16);
+					lastSection = curSection;
 				}
 
 				if (!PlayState.SONG.notes[Std.int(curStep / 16)].mustHitSection)
@@ -1544,7 +1547,7 @@ class PlayState extends MusicBeatState
 		canPause = false;
 		songMusic.volume = 0;
 		vocals.volume = 0;
-		if (SONG.validScore)
+		if (!Init.trueSettings.get('Botplay') && SONG.validScore)
 			Highscore.saveScore(SONG.song, songScore, Timings.getAccuracy(), misses, storyDifficulty);
 
 		if (!isStoryMode)
@@ -1577,7 +1580,7 @@ class PlayState extends MusicBeatState
 				Main.switchState(this, new StoryMenuState());
 
 				// save the week's score if the score is valid
-				if (SONG.validScore)
+				if (!Init.trueSettings.get('Botplay') && SONG.validScore)
 				{
 					var avgAccuracy:Float = 0;
 					for(i in campaignAccuracy)
