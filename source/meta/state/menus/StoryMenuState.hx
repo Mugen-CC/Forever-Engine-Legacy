@@ -14,6 +14,7 @@ import flixel.util.FlxTimer;
 import gameObjects.userInterface.menu.*;
 import meta.MusicBeat.MusicBeatState;
 import meta.data.*;
+import meta.data.Highscore.ScoreMetaData;
 import meta.data.dependency.Discord;
 
 using StringTools;
@@ -50,6 +51,9 @@ class StoryMenuState extends MusicBeatState
 	var sprDifficulty:FlxSprite;
 	var leftArrow:FlxSprite;
 	var rightArrow:FlxSprite;
+
+	var lerpScore:ScoreMetaData;
+	var intendedScore:ScoreMetaData;
 
 	override function create()
 	{
@@ -197,9 +201,10 @@ class StoryMenuState extends MusicBeatState
 	{
 		// scoreText.setFormat('VCR OSD Mono', 32);
 		var lerpVal = Main.framerateAdjust(0.5);
-		lerpScore = Math.floor(FlxMath.lerp(lerpScore, intendedScore, lerpVal));
+		lerpScore = ScoreMetaData.lerp(lerpScore, intendedScore, lerpVal);
 
-		scoreText.text = "WEEK SCORE:" + lerpScore;
+		scoreText.text = "WEEK SCORE:" + lerpScore.score + ' (${CoolUtil.percentageTo2DP(lerpScore.accuracy)}%)'
+			+ '(${((intendedScore == null || intendedScore.comboBreaks < 0) ? 'N/A' : '${lerpScore.comboBreaks}')} misses)';
 
 		txtWeekTitle.text = Main.gameWeeks[curWeek][3].toUpperCase();
 		txtWeekTitle.x = FlxG.width - (txtWeekTitle.width + 10);
@@ -319,9 +324,6 @@ class StoryMenuState extends MusicBeatState
 
 		FlxTween.tween(sprDifficulty, {y: leftArrow.y + 15, alpha: 1}, 0.07);
 	}
-
-	var lerpScore:Int = 0;
-	var intendedScore:Int = 0;
 
 	function changeWeek(change:Int = 0):Void
 	{

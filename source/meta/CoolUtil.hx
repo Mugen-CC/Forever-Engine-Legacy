@@ -102,4 +102,22 @@ class CoolUtil
 		}
 		return dumbArray;
 	}
+
+	public static function percentageTo2DP(percentage:Float)
+	{
+		var roundedAcc = Math.floor(percentage * 100) / 100;
+		var roundedAccString:String;
+		if (roundedAcc == 0)
+			roundedAccString = "0.00";
+		else
+		{
+			roundedAccString = '${roundedAcc}';
+			var indexOfDecimal = roundedAccString.indexOf('.');
+			if (indexOfDecimal == -1)
+				roundedAccString = roundedAccString + '.00';
+			else if (indexOfDecimal == roundedAccString.length - 2)
+				roundedAccString = roundedAccString + '0';
+		}
+		return roundedAccString;
+	}
 }

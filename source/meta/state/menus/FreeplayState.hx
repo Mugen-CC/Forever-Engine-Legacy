@@ -16,6 +16,7 @@ import gameObjects.userInterface.HealthIcon;
 import lime.utils.Assets;
 import meta.MusicBeat.MusicBeatState;
 import meta.data.*;
+import meta.data.Highscore.ScoreMetaData;
 import meta.data.Song.SwagSong;
 import meta.data.dependency.Discord;
 import meta.data.font.Alphabet;
@@ -37,9 +38,11 @@ class FreeplayState extends MusicBeatState
 	var curDifficulty:Int = 1;
 
 	var scoreText:FlxText;
+	var accText:FlxText;
+	var missText:FlxText;
 	var diffText:FlxText;
-	var lerpScore:Int = 0;
-	var intendedScore:Int = 0;
+	var lerpScore:ScoreMetaData = new ScoreMetaData();
+	var intendedScore:ScoreMetaData = new ScoreMetaData();
 
 	var songThread:Thread;
 	var threadActive:Bool = true;
@@ -132,18 +135,24 @@ class FreeplayState extends MusicBeatState
 
 		scoreText = new FlxText(FlxG.width * 0.7, 5, 0, "", 32);
 		scoreText.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, RIGHT);
+		accText = new FlxText(FlxG.width * 0.7, scoreText.y+36, 0, "", 32);
+		accText.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, RIGHT);
+		missText = new FlxText(FlxG.width * 0.7, accText.y+36, 0, "", 32);
+		missText.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, RIGHT);
 
-		scoreBG = new FlxSprite(scoreText.x - scoreText.width, 0).makeGraphic(Std.int(FlxG.width * 0.35), 66, 0xFF000000);
+		scoreBG = new FlxSprite(scoreText.x - scoreText.width, 0).makeGraphic(Std.int(FlxG.width * 0.35), 77 + 36+28, 0xFF000000);
 		scoreBG.alpha = 0.6;
 		add(scoreBG);
 
-		diffText = new FlxText(scoreText.x, scoreText.y + 36, 0, "", 24);
+		diffText = new FlxText(scoreText.x, missText.y + 36, 0, "", 24);
 		diffText.alignment = CENTER;
 		diffText.font = scoreText.font;
 		diffText.x = scoreBG.getGraphicMidpoint().x;
 		add(diffText);
 
 		add(scoreText);
+		add(accText);
+		add(missText);
 
 		changeSelection();
 		changeDiff();
@@ -199,10 +208,7 @@ class FreeplayState extends MusicBeatState
 		FlxTween.color(bg, 0.35, bg.color, mainColor);
 
 		var lerpVal = Main.framerateAdjust(0.1);
-		lerpScore = Math.floor(FlxMath.lerp(lerpScore, intendedScore, lerpVal));
-
-		if (Math.abs(lerpScore - intendedScore) <= 10)
-			lerpScore = intendedScore;
+		lerpScore = ScoreMetaData.lerp(lerpScore, intendedScore, lerpVal);
 
 		var upP = controls.UI_UP_P;
 		var downP = controls.UI_DOWN_P;
@@ -245,9 +251,15 @@ class FreeplayState extends MusicBeatState
 		}
 
 		// Adhere the position of all the things (I'm sorry it was just so ugly before I had to fix it Shubs)
-		scoreText.text = "PERSONAL BEST:" + lerpScore;
-		scoreText.x = FlxG.width - scoreText.width - 5;
-		scoreBG.width = scoreText.width + 8;
+		scoreText.text = "PERSONAL BEST:" + lerpScore.score;
+		accText.text = "BEST ACCURACY:" + CoolUtil.percentageTo2DP(lerpScore.accuracy) + '%';
+		missText.text = "COMBO BREAKS:" + ((intendedScore == null || intendedScore.comboBreaks < 0) ? 'N/A' : '${lerpScore.comboBreaks}');
+
+		var maxWidth = Math.max(scoreText.width, Math.max(accText.width, missText.width));
+		scoreText.x = FlxG.width - (maxWidth+scoreText.width)/2 - 5;
+		accText.x   = FlxG.width - (maxWidth+accText.width)/2 - 5;
+		missText.x  = FlxG.width - (maxWidth+missText.width)/2 - 5;
+		scoreBG.width = maxWidth + 8;
 		scoreBG.x = FlxG.width - scoreBG.width;
 		diffText.x = scoreBG.x + (scoreBG.width / 2) - (diffText.width / 2);
 
