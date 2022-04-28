@@ -23,6 +23,7 @@ import flixel.util.FlxColor;
 import flixel.util.FlxSort;
 import flixel.util.FlxTimer;
 import gameObjects.*;
+import gameObjects.stages.*;
 import gameObjects.userInterface.*;
 import gameObjects.userInterface.notes.*;
 import gameObjects.userInterface.notes.Strumline.UIStaticArrow;
@@ -132,7 +133,7 @@ class PlayState extends MusicBeatState
 
 	public static var songLength:Float = 0;
 
-	private var stageBuild:Stage;
+	private var stageBuild:Dynamic;
 
 	public static var uiHUD:ClassHUD;
 
@@ -206,17 +207,57 @@ class PlayState extends MusicBeatState
 		//
 
 		// set up a class for the stage type in here afterwards
-		curStage = "";
+		curStage = null;
 		// call the song's stage if it exists
 		if (SONG.stage != null)
 			curStage = SONG.stage;
-
+		if(curStage == null){
+			switch (CoolUtil.spaceToDash(SONG.song.toLowerCase()))
+			{
+				case 'spookeez' | 'south' | 'monster':
+					curStage = 'spooky';
+				case 'pico' | 'blammed' | 'philly-nice':
+					curStage = 'philly';
+				case 'milf' | 'satin-panties' | 'high':
+					curStage = 'highway';
+				case 'cocoa' | 'eggnog':
+					curStage = 'mall';
+				case 'winter-horrorland':
+					curStage = 'mallEvil';
+				case 'senpai' | 'roses':
+					curStage = 'school';
+				case 'thorns':
+					curStage = 'schoolEvil';
+				default:
+					curStage = 'stage';
+			}
+		}
 		// cache shit
 		displayRating('sick', 'early', true);
 		popUpCombo(true);
 		//
 
-		stageBuild = new Stage(curStage);
+		//stageBuild = new Stage(curStage);
+		switch (curStage)
+		{
+			case 'spooky':
+				stageBuild = new StageSpooky();
+			case 'philly':
+				stageBuild = new StagePhilly();
+			case 'highway':   
+				stageBuild = new StageHighway();
+			case 'mall':   
+				stageBuild = new StageMall();
+			case 'mallEvil':  
+				stageBuild = new StageMallEvil();
+			case 'school':  
+				stageBuild = new StageSchool();
+			case 'schoolEvil':
+				stageBuild = new StageSchoolEvil();
+			default:
+				stageBuild = new StageDefault();
+		}
+		
 		add(stageBuild);
 
 		/*
@@ -233,7 +274,7 @@ class PlayState extends MusicBeatState
 		// set up characters here too
 		gf = new Character();
 		gf.adjustPos = false;
-		gf.setCharacter(300, 100, stageBuild.returnGFtype(curStage));
+		gf.setCharacter(300, 100, stageBuild.returnGFtype());
 		gf.scrollFactor.set(0.95, 0.95);
 
 		dadOpponent = new Character().setCharacter(50, 850, SONG.player2);
@@ -243,8 +284,8 @@ class PlayState extends MusicBeatState
 
 		var camPos:FlxPoint = new FlxPoint(gf.getMidpoint().x - 100, boyfriend.getMidpoint().y - 100);
 
-		stageBuild.repositionPlayers(curStage, boyfriend, dadOpponent, gf);
-		stageBuild.dadPosition(curStage, boyfriend, dadOpponent, gf, camPos);
+		stageBuild.repositionPlayers(boyfriend, dadOpponent, gf);
+		stageBuild.dadPosition(boyfriend, dadOpponent, gf, camPos);
 
 		changeableSkin = Init.trueSettings.get("UI Skin");
 		if ((curStage.startsWith("school")) && ((determinedChartType == "FNF")))
