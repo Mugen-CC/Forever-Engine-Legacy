@@ -235,7 +235,7 @@ class PlayState extends MusicBeatState
 			gf = new Character();
 			gf.adjustPos = false;
 			gf.setCharacter(300, 100, stageBuild.returnGFtype(SONG.song));
-			gf.scrollFactor.set(0.95, 0.95);
+		gf.scrollFactor.set(gf.characterData.scrollX, gf.characterData.scrollY);
 
 		dadOpponent = new Character().setCharacter(50, 850, SONG.player2);
 		boyfriend = new Boyfriend();
@@ -285,7 +285,7 @@ class PlayState extends MusicBeatState
 		generateSong(SONG.song);
 
 		// set the camera position to the center of the stage
-		camPos.set(gf.x + (gf.frameWidth / 2), gf.y + (gf.frameHeight / 2));
+		camPos.set(gf.x + (gf.frameWidth / 2), gf.y + (gf.frameHeight / 2) + gf.characterData.camOffsetY);
 
 		// create the game camera
 		camFollow = new FlxObject(0, 0, 1, 1);
@@ -682,6 +682,7 @@ class PlayState extends MusicBeatState
 			for (hud in allUIs)
 				hud.angle = FlxMath.lerp(0 + forceZoom[3], hud.angle, easeLerp);
 
+			//Game Over
 			if (health <= 0 && startedCountdown)
 			{
 				// startTimer.active = false;
@@ -1398,14 +1399,14 @@ class PlayState extends MusicBeatState
 		// sometime my brain farts dont ask me why these functions were separated before
 
 		// sort through them
-		unspawnNotes.sort(sortByShit);
+		unspawnNotes.sort(noteComparator);
 		// give the game the heads up to be able to start
 		generatedMusic = true;
 
 		Timings.accuracyMaxCalculation(unspawnNotes);
 	}
 
-	function sortByShit(Obj1:Note, Obj2:Note):Int
+	function noteComparator(Obj1:Note, Obj2:Note):Int
 		return FlxSort.byValues(FlxSort.ASCENDING, Obj1.strumTime, Obj2.strumTime);
 
 	function resyncVocals():Void

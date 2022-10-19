@@ -56,9 +56,11 @@ class Stage extends FlxTypedGroup<FlxBasic>
 			case 'senpai' | 'roses':
 				curStage = 'school';
 			case 'thorns':
-				curStage = 'schoolEvil';*/
+					curStage = 'schoolEvil'; */
 			case 'funny-scream' | 'scopophobia':
 				curStage = 'mountains';
+			case 'gamemode-1':
+				curStage = 'minecraft';
 			default:
 				curStage = 'stage';
 		}
@@ -81,9 +83,13 @@ class Stage extends FlxTypedGroup<FlxBasic>
 			case 'school':
 				return new StageSchool();
 			case 'schoolEvil':
-				return new StageSchoolEvil();*/
+					return new StageSchoolEvil(); */
 			case 'mountains':
 				return new StageMountains();
+			case 'park':
+				return new StagePark();
+			case 'minecraft':
+				return new StageMinecraft();
 			default:
 				return new StageStage();
 		}

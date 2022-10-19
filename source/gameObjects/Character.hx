@@ -23,6 +23,9 @@ typedef CharacterData = {
 	var camOffsetX:Float;
 	var camOffsetY:Float;
 	var quickDancer:Bool;
+	// scroll variables are used for gf only
+	var scrollX:Float;
+	var scrollY:Float;
 }
 
 class Character extends FNFSprite
@@ -54,7 +57,9 @@ class Character extends FNFSprite
 			offsetX: 0, 
 			camOffsetY: 0,
 			camOffsetX: 0,
-			quickDancer: false
+			quickDancer: false,
+			scrollX: 0.95,
+			scrollY: 0.95
 		};
 
 		switch (curCharacter)
@@ -103,7 +108,6 @@ class Character extends FNFSprite
 				animation.addByIndices('danceRight', 'GF Dancing Beat', [15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29], "", 24, false);
 
 				playAnim('danceRight');
-
 			case 'gf-car':
 				tex = Paths.getSparrowAtlas('characters/gfCar');
 				frames = tex;
@@ -116,6 +120,33 @@ class Character extends FNFSprite
 				addOffset('danceRight', 0);
 
 				playAnim('danceRight');
+			case 'gf-park':
+				tex = Paths.getSparrowAtlas('characters/gfPark');
+				frames = tex;
+				animation.addByIndices('danceLeft', 'GF Dancing Beat', [30, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14], "", 24, false);
+				animation.addByIndices('danceRight', 'GF Dancing Beat', [15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29], "", 24, false);
+
+				addOffset('danceLeft', 0);
+				addOffset('danceRight', 0);
+
+				playAnim('danceRight');
+
+				characterData.scrollX = 1;
+				characterData.scrollY = 1;
+			case 'gf-minecraft':
+				tex = Paths.getSparrowAtlas('characters/gfMinecraft');
+				frames = tex;
+				animation.addByIndices('danceLeft', 'gf dance', [30, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14], "", 24, false);
+				animation.addByIndices('danceRight', 'gf dance', [15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29], "", 24, false);
+
+				addOffset('danceLeft', 0);
+				addOffset('danceRight', 0);
+
+				playAnim('danceRight');
+
+				characterData.scrollX = 1;
+				characterData.scrollY = 1;
+				characterData.camOffsetY = -70;
 
 			case 'gf-pixel':
 				tex = Paths.getSparrowAtlas('characters/gfPixel');
@@ -333,7 +364,6 @@ class Character extends FNFSprite
 				animation.addByPrefix('deathConfirm', "RETRY confirm holding gf", 24, false);
 
 				playAnim('firstDeath');
-
 			case 'bf-christmas':
 				var tex = Paths.getSparrowAtlas('characters/bfChristmas');
 				frames = tex;
@@ -347,6 +377,41 @@ class Character extends FNFSprite
 				animation.addByPrefix('singRIGHTmiss', 'BF NOTE RIGHT MISS', 24, false);
 				animation.addByPrefix('singDOWNmiss', 'BF NOTE DOWN MISS', 24, false);
 				animation.addByPrefix('hey', 'BF HEY', 24, false);
+
+				playAnim('idle');
+
+				flipX = true;
+			case 'bf-mountains':
+				var tex = Paths.getSparrowAtlas('characters/bfMountains');
+				frames = tex;
+				animation.addByPrefix('idle', 'BF idle dance', 24, false);
+				animation.addByPrefix('singUP', 'BF NOTE UP0', 24, false);
+				animation.addByPrefix('singLEFT', 'BF NOTE LEFT0', 24, false);
+				animation.addByPrefix('singRIGHT', 'BF NOTE RIGHT0', 24, false);
+				animation.addByPrefix('singDOWN', 'BF NOTE DOWN0', 24, false);
+				animation.addByPrefix('singUPmiss', 'BF NOTE UP MISS', 24, false);
+				animation.addByPrefix('singLEFTmiss', 'BF NOTE LEFT MISS', 24, false);
+				animation.addByPrefix('singRIGHTmiss', 'BF NOTE RIGHT MISS', 24, false);
+				animation.addByPrefix('singDOWNmiss', 'BF NOTE DOWN MISS', 24, false);
+				//animation.addByPrefix('hey', 'BF HEY', 24, false);
+
+				playAnim('idle');
+
+				flipX = true;
+			case 'bf-minecraft':
+				var tex = Paths.getSparrowAtlas('characters/bfMinecraft');
+				frames = tex;
+				animation.addByPrefix('idle', 'idle', 24, false);
+				animation.addByPrefix('singUP', 'up', 24, false);
+				animation.addByPrefix('singLEFT', 'left', 24, false);
+				animation.addByPrefix('singRIGHT', 'right', 24, false);
+				animation.addByPrefix('singDOWN', 'down', 24, false);
+				animation.addByPrefix('singUPmiss', 'miss_up', 24, false);
+				animation.addByPrefix('singLEFTmiss', 'miss_left', 24, false);
+				animation.addByPrefix('singRIGHTmiss', 'miss_right', 24, false);
+				animation.addByPrefix('singDOWNmiss', 'miss_down', 24, false);
+				// animation.addByPrefix('hey', 'BF HEY', 24, false);
+				characterData.camOffsetY = -60;
 
 				playAnim('idle');
 
@@ -497,6 +562,26 @@ class Character extends FNFSprite
 
 				playAnim('idle');
 				characterData.camOffsetY = -50;
+			case 'scp1788':
+				// DAD ANIMATION LOADING CODE
+				frames = Paths.getSparrowAtlas('characters/1788');
+				animation.addByPrefix('idle', '1788idle', 24, false);
+				animation.addByPrefix('singUP', '1788up', 24);
+				animation.addByPrefix('singRIGHT', '1788right', 24);
+				animation.addByPrefix('singDOWN', '1788down', 24);
+				animation.addByPrefix('singLEFT', '1788left', 24);
+			case 'scp4335':
+				// DAD ANIMATION LOADING CODE
+				frames = Paths.getSparrowAtlas('characters/SCP-4335');
+				animation.addByPrefix('idle', 'idle', 24, false);
+				animation.addByPrefix('singUP', 'up', 24);
+				animation.addByPrefix('singRIGHT', 'right', 24);
+				animation.addByPrefix('singDOWN', 'down', 24);
+				animation.addByPrefix('singLEFT', 'left', 24);
+				characterData.camOffsetX = 30;
+				characterData.camOffsetY = -10;
+
+				playAnim('idle');
 			default:
 				// set up animations if they aren't already
 

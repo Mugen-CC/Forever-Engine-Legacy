@@ -66,9 +66,13 @@ class HealthIcon extends FlxSprite
 			case 'bf':
 				return FlxColor.fromRGB(49,176,209);
 			case 'pico':
-				return FlxColor.fromRGB(183,216,85);
+				return FlxColor.fromRGB(183, 216, 85);
 			case 'scp096':
-				return FlxColor.fromRGB(204,204,204);
+				return FlxColor.fromRGB(204, 204, 204);
+			case 'scp1788':
+				return FlxColor.fromRGB(39, 222, 255);
+			case 'scp4335':
+				return FlxColor.fromRGB(156, 0, 196);
 			default:
 				return isPlayer ? 0xFF66FF33 : FlxColor.RED;
 		}

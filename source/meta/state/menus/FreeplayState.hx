@@ -38,7 +38,7 @@ class FreeplayState extends MusicBeatState
 	var selector:FlxText;
 	var selectedSong:Int = 0;
 	var curSongPlaying:Int = -1;
-	var curDifficulty:Int = 1;
+	var curDifficulty:Int = 2;
 
 	var scoreText:FlxText;
 	var accuracyText:FlxText;
@@ -189,7 +189,10 @@ class FreeplayState extends MusicBeatState
 		var coolDifficultyArray = [];
 		for (i in CoolUtil.difficultyArray)
 			if (FileSystem.exists(Paths.songJson(songName, songName + '-' + i)))
+			{
 				coolDifficultyArray.push(i);
+				trace('Adding song $songName with difficulty $i');
+			}
 
 		if (coolDifficultyArray.length > 0)
 		{ //*/

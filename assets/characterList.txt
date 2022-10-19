@@ -18,3 +18,5 @@ senpai-angry
 spirit
 expunged
 scp096
+scp1788
+scp4335
